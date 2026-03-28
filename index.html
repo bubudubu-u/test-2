@@ -1,3 +1,4 @@
+const GITHUB_RAW = 'https://raw.githubusercontent.com/bubudubu-u/test-2/main/';
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,36 +25,16 @@ html,body{height:100%;width:100%;overflow:hidden;background:var(--dark);font-fam
 .lk-float{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
 .lk-h{position:absolute;opacity:.12;animation:lfloat 7s ease-in-out infinite;}
 @keyframes lfloat{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-18px) scale(1.1);}}
-
 .lk-lock{font-size:2.8rem;animation:pulse 1.6s ease-in-out infinite;}
 @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
-
 .lk-title{font-family:'Dancing Script',cursive;font-size:clamp(1.8rem,6vw,3rem);
   color:var(--blush);text-align:center;line-height:1.3;
   text-shadow:0 0 40px rgba(255,77,109,.6);animation:glow 2s ease-in-out infinite alternate;}
 @keyframes glow{from{text-shadow:0 0 15px rgba(255,77,109,.4);}to{text-shadow:0 0 50px rgba(255,77,109,.9),0 0 80px rgba(255,77,109,.3);}}
-
 .lk-sub{color:rgba(255,179,193,.6);font-size:.9rem;letter-spacing:2px;font-style:italic;}
-
-/* Song upload on lock */
-.song-upload-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;}
-.song-upload-label{
-  display:flex;align-items:center;gap:8px;
-  background:rgba(255,77,109,.15);border:1px dashed rgba(255,179,193,.4);
-  border-radius:30px;padding:9px 20px;cursor:pointer;
-  color:var(--blush);font-size:.85rem;letter-spacing:1px;
-  transition:all .3s;font-family:'Cormorant Garamond',serif;
-}
-.song-upload-label:hover{background:rgba(255,77,109,.25);border-color:var(--rose);}
-.song-upload-label input{display:none;}
-#songStatus{color:rgba(255,215,0,.7);font-size:.78rem;font-style:italic;}
-
-/* Dots */
 .dots{display:flex;gap:10px;}
 .dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--blush);background:transparent;transition:all .25s;}
 .dot.on{background:var(--rose);border-color:var(--rose);box-shadow:0 0 10px var(--rose);}
-
-/* Numpad */
 .numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:min(260px,80vw);}
 .nb{
   background:rgba(255,255,255,.05);border:1px solid rgba(255,179,193,.2);
@@ -62,11 +43,9 @@ html,body{height:100%;width:100%;overflow:hidden;background:var(--dark);font-fam
   transition:background .15s,transform .1s,box-shadow .15s;
   font-family:'Playfair Display',serif;
   display:flex;align-items:center;justify-content:center;
-  /* no delay */
   -webkit-user-select:none;user-select:none;
 }
 .nb:active{background:rgba(255,77,109,.35);transform:scale(.93);box-shadow:0 0 15px rgba(255,77,109,.4);}
-
 #errMsg{color:var(--rose);font-size:.85rem;opacity:0;transition:opacity .3s;letter-spacing:1px;}
 #errMsg.show{opacity:1;}
 .shake{animation:shk .45s ease-in-out!important;}
@@ -84,8 +63,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:var(--dark);font-fam
 
 /* ─── MAIN APP ─── */
 #app{display:none;position:fixed;inset:0;background:linear-gradient(135deg,#0d0005,#1a0010 50%,#0d0510);}
-
-/* BG hearts */
 .bg-hearts{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
 .bh{position:absolute;animation:bhf linear infinite;opacity:0;font-size:1.1rem;}
 @keyframes bhf{0%{transform:translateY(100vh);opacity:0;}10%{opacity:.5;}90%{opacity:.25;}100%{transform:translateY(-8vh);opacity:0;}}
@@ -110,7 +87,7 @@ nav::-webkit-scrollbar{display:none;}
   min-width:64px;
 }
 .nb2 .ni{font-size:1.3rem;}
-.nb2:active,.nb2.active{color:#fff;background:rgba(255,77,109,.18);}
+.nb2.active{color:#fff;background:rgba(255,77,109,.18);}
 
 /* ─── PAGES ─── */
 .pages{position:absolute;inset:0;bottom:55px;overflow:hidden;}
@@ -146,7 +123,6 @@ nav::-webkit-scrollbar{display:none;}
 .at{font-family:'Playfair Display',serif;font-size:clamp(.8rem,2.5vw,1.1rem);letter-spacing:6px;color:var(--gold);text-align:center;}
 .am{font-family:'Dancing Script',cursive;font-size:clamp(2rem,7vw,4.5rem);text-align:center;background:linear-gradient(135deg,#fff,var(--blush),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;}
 .as{font-style:italic;color:rgba(255,179,193,.75);font-size:clamp(.9rem,2.5vw,1.1rem);text-align:center;max-width:340px;line-height:1.7;}
-/* orbit */
 .orb{position:relative;width:180px;height:180px;margin:10px auto 0;}
 .or{position:absolute;inset:0;border-radius:50%;border:1px dashed rgba(255,179,193,.2);animation:os linear infinite;}
 .or:nth-child(1){animation-duration:6s;}
@@ -172,15 +148,23 @@ nav::-webkit-scrollbar{display:none;}
 .mgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:600px;width:100%;}
 .mc{
   background:var(--card);border:1px solid var(--border);border-radius:14px;
-  padding:18px 14px;text-align:center;cursor:pointer;
+  padding:14px 12px;text-align:center;cursor:pointer;
   transition:transform .3s,box-shadow .3s,background .3s;
   position:relative;overflow:hidden;
 }
 .mc:active{transform:scale(.96);}
-.mc:hover{transform:translateY(-6px);border-color:var(--rose);box-shadow:0 16px 35px rgba(255,77,109,.2);background:rgba(255,77,109,.07);}
-.mi{font-size:2.2rem;margin-bottom:8px;display:block;}
-.mt{font-family:'Playfair Display',serif;color:#fff;font-size:.9rem;margin-bottom:4px;}
-.md{color:rgba(255,179,193,.65);font-size:.78rem;font-style:italic;}
+.mc:hover{transform:translateY(-4px);border-color:var(--rose);box-shadow:0 14px 30px rgba(255,77,109,.2);}
+.mi{font-size:2rem;margin-bottom:6px;display:block;}
+.mt{font-family:'Playfair Display',serif;color:#fff;font-size:.88rem;margin-bottom:4px;}
+.md{color:rgba(255,179,193,.65);font-size:.76rem;font-style:italic;line-height:1.5;}
+
+/* Memory pic modal */
+.memmodal{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:20px;backdrop-filter:blur(14px);}
+.memmodal.show{opacity:1;pointer-events:all;}
+.memmodal img{max-width:100%;max-height:62vh;border-radius:16px;object-fit:contain;box-shadow:0 0 50px rgba(255,77,109,.4);}
+.mem-caption{color:rgba(255,240,243,.9);font-style:italic;font-size:clamp(.9rem,2.5vw,1.05rem);text-align:center;line-height:1.75;margin-top:14px;max-width:360px;font-family:'Cormorant Garamond',serif;}
+.memclose{position:absolute;top:18px;right:18px;font-size:1.8rem;color:white;cursor:pointer;background:rgba(255,77,109,.4);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;}
+.mem-loading{color:var(--blush);font-size:1.5rem;font-style:italic;font-family:'Dancing Script',cursive;}
 
 /* ─── PAGE 4: GIFTS ─── */
 .gcontainer{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:600px;padding-bottom:8px;}
@@ -203,8 +187,6 @@ nav::-webkit-scrollbar{display:none;}
 @keyframes bnc{0%,100%{transform:scale(1);}50%{transform:scale(1.2);}}
 .gico{font-size:2rem;z-index:1;}
 .glbl{color:rgba(255,179,193,.75);font-size:.7rem;z-index:1;font-style:italic;}
-
-/* Gift modal */
 .gmodal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s;backdrop-filter:blur(12px);}
 .gmodal.show{opacity:1;pointer-events:all;}
 .gmbox{background:linear-gradient(135deg,#1a0010,#0d0520);border:1px solid rgba(255,179,193,.3);border-radius:22px;padding:32px 24px;max-width:380px;width:90%;text-align:center;transform:scale(.8);transition:transform .35s cubic-bezier(.175,.885,.32,1.275);}
@@ -233,6 +215,20 @@ nav::-webkit-scrollbar{display:none;}
 .ci::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--rose),var(--mauve));}
 .cn{font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);font-weight:700;line-height:1;}
 .cl{color:rgba(255,179,193,.6);font-size:.65rem;letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+
+/* Countdown to special day */
+.countdown-wrap{
+  background:linear-gradient(135deg,rgba(255,77,109,.12),rgba(157,78,221,.08));
+  border:1px solid rgba(255,179,193,.2);border-radius:18px;
+  padding:20px 18px;max-width:360px;width:100%;text-align:center;
+  margin-top:6px;
+}
+.countdown-title{font-family:'Dancing Script',cursive;font-size:1.4rem;color:var(--blush);margin-bottom:10px;}
+.cd-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.cd-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,179,193,.2);border-radius:12px;padding:12px 10px;min-width:62px;text-align:center;}
+.cd-num{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold);font-weight:700;line-height:1;}
+.cd-lbl{color:rgba(255,179,193,.6);font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;margin-top:3px;}
+
 .frames{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:10px;}
 .frm{border:2px solid rgba(255,215,0,.35);border-radius:14px;padding:6px;background:rgba(255,255,255,.03);font-size:3.5rem;line-height:1;cursor:pointer;box-shadow:0 0 20px rgba(255,77,109,.15);}
 
@@ -255,10 +251,7 @@ nav::-webkit-scrollbar{display:none;}
 .pic-placeholder span{font-size:2rem;}
 .pic-placeholder p{font-size:.75rem;font-style:italic;}
 .pic-num{position:absolute;top:8px;left:8px;background:rgba(255,77,109,.7);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-family:'Playfair Display',serif;}
-.upload-bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:600px;width:100%;margin-bottom:6px;}
-.upl-btn{background:rgba(255,77,109,.15);border:1px dashed rgba(255,179,193,.4);border-radius:20px;padding:7px 14px;color:var(--blush);font-size:.75rem;cursor:pointer;transition:all .25s;font-family:'Cormorant Garamond',serif;display:flex;align-items:center;gap:5px;}
-.upl-btn input{display:none;}
-.upl-btn:hover{background:rgba(255,77,109,.25);border-color:var(--rose);}
+.github-info{background:rgba(255,77,109,.1);border:1px dashed rgba(255,179,193,.3);border-radius:12px;padding:10px 14px;max-width:600px;width:100%;text-align:center;font-size:.78rem;color:rgba(255,179,193,.7);font-style:italic;line-height:1.6;}
 
 /* Pic modal */
 .picmodal{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:20px;}
@@ -297,7 +290,6 @@ nav::-webkit-scrollbar{display:none;}
 #songHint .sh-dot{width:8px;height:8px;border-radius:50%;background:var(--rose);animation:sblink 1s ease-in-out infinite;}
 @keyframes sblink{0%,100%{opacity:1;}50%{opacity:.3;}}
 
-/* scrollbar */
 ::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-thumb{background:rgba(255,77,109,.35);border-radius:2px;}
 </style>
@@ -312,22 +304,10 @@ nav::-webkit-scrollbar{display:none;}
   <div class="lk-lock">🔒</div>
   <div class="lk-title">Something Beautiful<br>Awaits You 💓</div>
   <div class="lk-sub">Enter the secret code</div>
-
-  <!-- Song upload on lock screen -->
-  <div class="song-upload-wrap">
-    <label class="song-upload-label">
-      🎵 Upload Your Song
-      <input type="file" accept="audio/*" id="songFile" onchange="loadSong(this)">
-    </label>
-    <div id="songStatus">No song uploaded yet</div>
-  </div>
-
   <div class="dots" id="dots"></div>
   <div class="numpad" id="np">
-    <button class="nb" 
-    ontouchstart="pressKey('1')">1</button>
-    <button class="nb" 
-     ontouchstart="pressKey('2')">2</button>
+    <button class="nb" ontouchstart="pressKey('1')">1</button>
+    <button class="nb" ontouchstart="pressKey('2')">2</button>
     <button class="nb" ontouchstart="pressKey('3')">3</button>
     <button class="nb" ontouchstart="pressKey('4')">4</button>
     <button class="nb" ontouchstart="pressKey('5')">5</button>
@@ -392,14 +372,30 @@ nav::-webkit-scrollbar{display:none;}
       <div class="ptitle">Our Memories</div>
       <div class="pdiv"><span>✨</span></div>
       <div class="mgrid">
-        <div class="mc" ontouchstart="burst(event)" onclick="burst(event)"><span class="mi">🌅</span><div class="mt">First Date</div><div class="md">The day everything began</div></div>
-        <div class="mc" ontouchstart="burst(event)" onclick="burst(event)"><span class="mi">🎂</span><div class="mt">Birthdays</div><div class="md">Celebrating you always</div></div>
-        <div class="mc" ontouchstart="burst(event)" onclick="burst(event)"><span class="mi">🌙</span><div class="mt">Late Nights</div><div class="md">Talking till the sun rises</div></div>
-        <div class="mc" ontouchstart="burst(event)" onclick="burst(event)"><span class="mi">🌊</span><div class="mt">Adventures</div><div class="md">Every journey with you</div></div>
-        <div class="mc" ontouchstart="burst(event)" onclick="burst(event)"><span class="mi">🎵</span><div class="mt">Our Songs</div><div class="md">That song that's forever ours</div></div>
-        <div class="mc" ontouchstart="burst(event)" onclick="burst(event)"><span class="mi">🤗</span><div class="mt">Your Hugs</div><div class="md">Where I feel safest</div></div>
-        <div class="mc" ontouchstart="burst(event)" onclick="burst(event)"><span class="mi">😂</span><div class="mt">Our Laughs</div><div class="md">No one makes me laugh like you</div></div>
-        <div class="mc" ontouchstart="burst(event)" onclick="burst(event)"><span class="mi">🌟</span><div class="mt">Our Dreams</div><div class="md">A future built for two</div></div>
+        <div class="mc" ontouchstart="openMemory(event,'first_date.png','The day everything changed 🌅','That evening when we first met — nervous smiles, butterflies, and the beginning of forever.')">
+          <span class="mi">🌅</span><div class="mt">First Date</div><div class="md">The day everything began 💫</div>
+        </div>
+        <div class="mc" ontouchstart="openMemory(event,'birthday.png','Happy Birthday My Love 🎂','Every birthday with you feels like a celebration of the most beautiful person in my world.')">
+          <span class="mi">🎂</span><div class="mt">Birthdays</div><div class="md">Celebrating you always 🎉</div>
+        </div>
+        <div class="mc" ontouchstart="openMemory(event,'late_night.png','Our Late Night Talks 🌙','Those 3am conversations where we shared our deepest secrets and dreams with each other.')">
+          <span class="mi">🌙</span><div class="mt">Late Nights</div><div class="md">Talking till the sun rises 🌟</div>
+        </div>
+        <div class="mc" ontouchstart="openMemory(event,'adventure.png','Our Adventures Together 🌊','Every journey feels like magic when you are the one right beside me, my love.')">
+          <span class="mi">🌊</span><div class="mt">Adventures</div><div class="md">Every journey with you 🗺️</div>
+        </div>
+        <div class="mc" ontouchstart="openMemory(event,'our_song.png','Our Special Song 🎵','That one song that plays and takes us both back to that perfect beautiful moment in time.')">
+          <span class="mi">🎵</span><div class="mt">Our Songs</div><div class="md">The song that's forever ours 🎶</div>
+        </div>
+        <div class="mc" ontouchstart="openMemory(event,'hug.png','Your Warm Hugs 🤗','Every hug from you feels like coming home — safe, warm, and like nothing else matters.')">
+          <span class="mi">🤗</span><div class="mt">Your Hugs</div><div class="md">Where I feel safest 💞</div>
+        </div>
+        <div class="mc" ontouchstart="openMemory(event,'laugh.png','Our Laughs Together 😂','No one on this earth makes me laugh the way you do — pure joy every single time.')">
+          <span class="mi">😂</span><div class="mt">Our Laughs</div><div class="md">No one laughs like us 🤣</div>
+        </div>
+        <div class="mc" ontouchstart="openMemory(event,'dream.png','Our Shared Dreams 🌟','A future we are building together — full of love, light, laughter and endless happiness.')">
+          <span class="mi">🌟</span><div class="mt">Our Dreams</div><div class="md">A future built for two 💫</div>
+        </div>
       </div>
     </div>
 
@@ -409,12 +405,12 @@ nav::-webkit-scrollbar{display:none;}
       <div class="pdiv"><span>🎀</span></div>
       <p style="color:rgba(255,179,193,.6);font-style:italic;font-size:.85rem;margin-bottom:14px;text-align:center;">Tap each gift to unwrap 🎀</p>
       <div class="gcontainer">
-        <div class="gbox" ontouchstart="openGift(this,0)" onclick="openGift(this,0)"><div class="grib"></div><div class="gribh"></div><span class="gbow">🎀</span><span class="gico">💝</span><span class="glbl">My Heart</span></div>
-        <div class="gbox" ontouchstart="openGift(this,1)" onclick="openGift(this,1)"><div class="grib"></div><div class="gribh"></div><span class="gbow">🎀</span><span class="gico">🌹</span><span class="glbl">A Rose</span></div>
-        <div class="gbox" ontouchstart="openGift(this,2)" onclick="openGift(this,2)"><div class="grib"></div><div class="gribh"></div><span class="gbow">🎀</span><span class="gico">⭐</span><span class="glbl">A Star</span></div>
-        <div class="gbox" ontouchstart="openGift(this,3)" onclick="openGift(this,3)"><div class="grib"></div><div class="gribh"></div><span class="gbow">🎀</span><span class="gico">🎵</span><span class="glbl">Our Song</span></div>
-        <div class="gbox" ontouchstart="openGift(this,4)" onclick="openGift(this,4)"><div class="grib"></div><div class="gribh"></div><span class="gbow">🎀</span><span class="gico">💍</span><span class="glbl">Promise</span></div>
-        <div class="gbox" ontouchstart="openGift(this,5)" onclick="openGift(this,5)"><div class="grib"></div><div class="gribh"></div><span class="gbow">🎀</span><span class="gico">🌙</span><span class="glbl">Forever</span></div>
+        <div class="gbox" ontouchstart="openGift(event,this,0)"><div class="grib"></div><div class="gribh"></div><span class="gbow">🎀</span><span class="gico">💝</span><span class="glbl">My Heart</span></div>
+        <div class="gbox" ontouchstart="openGift(event,this,1)"><div class="grib"></div><div class="gribh"></div><span class="gbow">🎀</span><span class="gico">🌹</span><span class="glbl">A Rose</span></div>
+        <div class="gbox" ontouchstart="openGift(event,this,2)"><div class="grib"></div><div class="gribh"></div><span class="gbow">🎀</span><span class="gico">⭐</span><span class="glbl">A Star</span></div>
+        <div class="gbox" ontouchstart="openGift(event,this,3)"><div class="grib"></div><div class="gribh"></div><span class="gbow">🎀</span><span class="gico">🎵</span><span class="glbl">Our Song</span></div>
+        <div class="gbox" ontouchstart="openGift(event,this,4)"><div class="grib"></div><div class="gribh"></div><span class="gbow">🎀</span><span class="gico">💍</span><span class="glbl">Promise</span></div>
+        <div class="gbox" ontouchstart="openGift(event,this,5)"><div class="grib"></div><div class="gribh"></div><span class="gbow">🎀</span><span class="gico">🌙</span><span class="glbl">Forever</span></div>
       </div>
     </div>
 
@@ -438,27 +434,40 @@ nav::-webkit-scrollbar{display:none;}
         <div class="ci"><div class="cn" id="cD">--</div><div class="cl">Days</div></div>
       </div>
       <p style="color:rgba(255,179,193,.6);font-style:italic;font-size:.9rem;">Every second with you is a treasure 💓</p>
+
+      <!-- Countdown to April 17, 2026 -->
+      <div class="countdown-wrap">
+        <div class="countdown-title">💌 Next Special Day</div>
+        <p style="color:rgba(255,179,193,.5);font-size:.76rem;font-style:italic;margin-bottom:10px;">April 17, 2026 — Counting Down...</p>
+        <div class="cd-row">
+          <div class="cd-box"><div class="cd-num" id="cdD">--</div><div class="cd-lbl">Days</div></div>
+          <div class="cd-box"><div class="cd-num" id="cdH">--</div><div class="cd-lbl">Hours</div></div>
+          <div class="cd-box"><div class="cd-num" id="cdM">--</div><div class="cd-lbl">Mins</div></div>
+          <div class="cd-box"><div class="cd-num" id="cdS">--</div><div class="cd-lbl">Secs</div></div>
+        </div>
+      </div>
+
       <div class="frames">
-        <div class="frm" ontouchstart="burst(event)" onclick="burst(event)">💑</div>
-        <div class="frm" ontouchstart="burst(event)" onclick="burst(event)">🌹</div>
-        <div class="frm" ontouchstart="burst(event)" onclick="burst(event)">💕</div>
+        <div class="frm" ontouchstart="burst(event)">💑</div>
+        <div class="frm" ontouchstart="burst(event)">🌹</div>
+        <div class="frm" ontouchstart="burst(event)">💕</div>
       </div>
     </div>
 
-    <!-- P7 OUR MOMENTS (PICS) -->
+    <!-- P7 OUR MOMENTS (PICS from GitHub) -->
     <div class="page" id="p7">
       <div class="ptitle">Our Moments 📸</div>
       <div class="pdiv"><span>🌸</span></div>
-      <div class="upload-bar">
-        <label class="upl-btn">📁 Upload 1.png–5.png <input type="file" accept="image/*" multiple onchange="loadPics(this)"></label>
+      <div class="github-info">
+        📁 Photos load from your GitHub repo<br>
+        Upload: <strong>png.1 png.2 png.3 png.4 png.5</strong> to your repo
       </div>
       <div class="pgrid" id="picGrid">
-        <!-- 5 pic slots -->
-        <div class="pic-item" id="pic0" ontouchstart="openPic(0)" onclick="openPic(0)"><span class="pic-num">1</span><div class="pic-placeholder"><span>📷</span><p>Upload 1.png</p></div></div>
-        <div class="pic-item" id="pic1" ontouchstart="openPic(1)" onclick="openPic(1)"><span class="pic-num">2</span><div class="pic-placeholder"><span>📷</span><p>Upload 2.png</p></div></div>
-        <div class="pic-item" id="pic2" ontouchstart="openPic(2)" onclick="openPic(2)"><span class="pic-num">3</span><div class="pic-placeholder"><span>📷</span><p>Upload 3.png</p></div></div>
-        <div class="pic-item" id="pic3" ontouchstart="openPic(3)" onclick="openPic(3)"><span class="pic-num">4</span><div class="pic-placeholder"><span>📷</span><p>Upload 4.png</p></div></div>
-        <div class="pic-item" id="pic4" ontouchstart="openPic(4)" onclick="openPic(4)"><span class="pic-num">5</span><div class="pic-placeholder"><span>📷</span><p>Upload 5.png</p></div></div>
+        <div class="pic-item" id="pic0" ontouchstart="openPic(event,0)"><span class="pic-num">1</span><div class="pic-placeholder"><span>📷</span><p>Loading png.1...</p></div></div>
+        <div class="pic-item" id="pic1" ontouchstart="openPic(event,1)"><span class="pic-num">2</span><div class="pic-placeholder"><span>📷</span><p>Loading png.2...</p></div></div>
+        <div class="pic-item" id="pic2" ontouchstart="openPic(event,2)"><span class="pic-num">3</span><div class="pic-placeholder"><span>📷</span><p>Loading png.3...</p></div></div>
+        <div class="pic-item" id="pic3" ontouchstart="openPic(event,3)"><span class="pic-num">4</span><div class="pic-placeholder"><span>📷</span><p>Loading png.4...</p></div></div>
+        <div class="pic-item" id="pic4" ontouchstart="openPic(event,4)"><span class="pic-num">5</span><div class="pic-placeholder"><span>📷</span><p>Loading png.5...</p></div></div>
       </div>
     </div>
 
@@ -473,14 +482,14 @@ nav::-webkit-scrollbar{display:none;}
 
   <!-- BOTTOM NAV -->
   <nav id="mainnav">
-    <button class="nb2 active" ontouchstart="goPage(1)" onclick="goPage(1)"><span class="ni">💓</span>Home</button>
-    <button class="nb2" ontouchstart="goPage(2)" onclick="goPage(2)"><span class="ni">💌</span>Letter</button>
-    <button class="nb2" ontouchstart="goPage(3)" onclick="goPage(3)"><span class="ni">✨</span>Memories</button>
-    <button class="nb2" ontouchstart="goPage(4)" onclick="goPage(4)"><span class="ni">🎁</span>Gifts</button>
-    <button class="nb2" ontouchstart="goPage(5)" onclick="goPage(5)"><span class="ni">📝</span>Reasons</button>
-    <button class="nb2" ontouchstart="goPage(6)" onclick="goPage(6)"><span class="ni">⏳</span>Time</button>
-    <button class="nb2" ontouchstart="goPage(7)" onclick="goPage(7)"><span class="ni">📸</span>Moments</button>
-    <button class="nb2" ontouchstart="goPage(8)" onclick="goPage(8)"><span class="ni">🕊️</span>Fights</button>
+    <button class="nb2 active" ontouchstart="goPage(1)"><span class="ni">💓</span>Home</button>
+    <button class="nb2" ontouchstart="goPage(2)"><span class="ni">💌</span>Letter</button>
+    <button class="nb2" ontouchstart="goPage(3)"><span class="ni">✨</span>Memories</button>
+    <button class="nb2" ontouchstart="goPage(4)"><span class="ni">🎁</span>Gifts</button>
+    <button class="nb2" ontouchstart="goPage(5)"><span class="ni">📝</span>Reasons</button>
+    <button class="nb2" ontouchstart="goPage(6)"><span class="ni">⏳</span>Time</button>
+    <button class="nb2" ontouchstart="goPage(7)"><span class="ni">📸</span>Moments</button>
+    <button class="nb2" ontouchstart="goPage(8)"><span class="ni">🕊️</span>Fights</button>
   </nav>
 </div>
 
@@ -490,37 +499,70 @@ nav::-webkit-scrollbar{display:none;}
     <span class="gme" id="gme">💝</span>
     <div class="gmt" id="gmt">Title</div>
     <div class="gmm" id="gmm">msg</div>
-    <button class="gmc" ontouchstart="closeGModal()" onclick="closeGModal()">Close 💓</button>
+    <button class="gmc" ontouchstart="closeGModal()">Close 💓</button>
   </div>
 </div>
 
+<!-- Memory pic modal -->
+<div class="memmodal" id="memModal" ontouchstart="closeMemModal()">
+  <button class="memclose" ontouchstart="closeMemModal()">✕</button>
+  <div class="mem-loading" id="memLoading">Loading... 💓</div>
+  <img id="memModalImg" src="" alt="" style="display:none;" ontouchstart="stopProp(event)">
+  <div class="mem-caption" id="memCaption" ontouchstart="stopProp(event)"></div>
+</div>
+
 <!-- Pic modal -->
-<div class="picmodal" id="picModal" ontouchstart="closePicModal()" onclick="closePicModal()">
-  <button class="picclose" ontouchstart="closePicModal()" onclick="closePicModal()">✕</button>
+<div class="picmodal" id="picModal" ontouchstart="closePicModal()">
+  <button class="picclose" ontouchstart="closePicModal()">✕</button>
   <img id="picModalImg" src="" alt="">
 </div>
 
 <script>
-/* ─── LOCK ─── */
-const CODE='123456';let entered='';
-// build dots
+// ══════════════════════════════════════════════
+// ⚙️  CONFIG — CHANGE THIS TO YOUR GITHUB REPO
+// ══════════════════════════════════════════════
+const GITHUB_RAW = 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/';
+// Examples:
+//   Moments pics: png.1, png.2, png.3, png.4, png.5
+//   Memory pics:  hug.png, first_date.png, birthday.png, etc.
+//   Song:         song.mp3 (or song.wav, song.ogg)
+const SONG_FILE = 'song.mp3'; // change extension if needed
+
+// ══════════════════════════════════════════════
+// 🔒 LOCK — double-tap fix: only touchstart, no click
+// ══════════════════════════════════════════════
+const CODE='271713';
+let entered='';
+let lastKey=0;
+
 const dotsEl=document.getElementById('dots');
 for(let i=0;i<6;i++){const d=document.createElement('div');d.className='dot';d.id='d'+i;dotsEl.appendChild(d);}
-// float hearts on lock
+
 const lkf=document.getElementById('lkf');
 ['💕','💗','💓','💖','❤️','🌹','✨'].forEach((h,i)=>{
   const el=document.createElement('div');el.className='lk-h';el.textContent=h;
   el.style.cssText=`left:${10+i*13}%;top:${5+i*12}%;font-size:${.8+Math.random()*.8}rem;animation-delay:${i*.9}s;animation-duration:${5+i}s;`;
   lkf.appendChild(el);
 });
+
 function updDots(){for(let i=0;i<6;i++)document.getElementById('d'+i).classList.toggle('on',i<entered.length);}
-let lastKey=0;
+
 function pressKey(n){
-  const now=Date.now();if(now-lastKey<80)return;lastKey=now;
+  // Prevent double fire — 300ms debounce
+  const now=Date.now();
+  if(now-lastKey<300)return;
+  lastKey=now;
+
   if(n==='del'){entered=entered.slice(0,-1);updDots();}
   else if(n==='ok'){checkCode();}
-  else{if(entered.length<6){entered+=n;updDots();if(entered.length===6)setTimeout(checkCode,250);}}
+  else{
+    if(entered.length<6){
+      entered+=n;updDots();
+      if(entered.length===6)setTimeout(checkCode,250);
+    }
+  }
 }
+
 function checkCode(){
   if(entered===CODE){unlock();}
   else{
@@ -530,29 +572,35 @@ function checkCode(){
   }
 }
 
-/* ─── SONG ─── */
+// ══════════════════════════════════════════════
+// 🎵 SONG — load from GitHub
+// ══════════════════════════════════════════════
 const audio=document.getElementById('bgSong');
 let songLoaded=false;
-function loadSong(inp){
-  if(!inp.files[0])return;
-  const url=URL.createObjectURL(inp.files[0]);
-  audio.src=url;audio.volume=0.45;
-  songLoaded=true;
-  document.getElementById('songStatus').textContent='✓ "'+inp.files[0].name+'" ready!';
+
+function loadSongFromGitHub(){
+  const url=GITHUB_RAW+SONG_FILE;
+  audio.src=url;
+  audio.volume=0.45;
+  audio.oncanplaythrough=()=>{songLoaded=true;};
+  audio.load();
 }
+loadSongFromGitHub();
+
 function playSong(){
-  if(songLoaded){
-    audio.play().catch(()=>{});
+  audio.play().then(()=>{
+    songLoaded=true;
     document.getElementById('songHint').classList.add('show');
-  }
+  }).catch(()=>{});
 }
-let songPaused=false;
 function toggleSong(){
-  if(audio.paused){audio.play();songPaused=false;document.getElementById('songHintTxt').textContent='♪ Playing';}
-  else{audio.pause();songPaused=true;document.getElementById('songHintTxt').textContent='♪ Paused';}
+  if(audio.paused){audio.play();document.getElementById('songHintTxt').textContent='♪ Playing';}
+  else{audio.pause();document.getElementById('songHintTxt').textContent='♪ Paused';}
 }
 
-/* ─── UNLOCK ─── */
+// ══════════════════════════════════════════════
+// 🔓 UNLOCK
+// ══════════════════════════════════════════════
 function unlock(){
   const fl=document.getElementById('unlockFlash');
   fl.classList.add('show');confettiBurst();
@@ -561,31 +609,138 @@ function unlock(){
     fl.style.transition='opacity .7s';fl.style.opacity='0';
     document.getElementById('app').style.display='block';
     startBgH();buildNotes();calcTime();buildFights();
+    loadMomentPics();
     playSong();
+    startCountdown();
     setTimeout(()=>{fl.style.display='none';},700);
   },1600);
 }
 
-/* ─── BG HEARTS ─── */
-function startBgH(){
-  const c=document.getElementById('bgh');
-  const hs=['💕','💗','💓','💖','❤️','🌸','✨','🌹','💫'];
-  for(let i=0;i<16;i++){
-    const h=document.createElement('div');h.className='bh';h.textContent=hs[i%hs.length];
-    h.style.cssText=`left:${Math.random()*100}%;font-size:${.6+Math.random()}rem;animation-duration:${10+Math.random()*12}s;animation-delay:${Math.random()*15}s;`;
-    c.appendChild(h);
+// ══════════════════════════════════════════════
+// 📅 TIME + COUNTDOWN TO APRIL 17 2026
+// ══════════════════════════════════════════════
+function calcTime(){
+  const start=new Date('2023-03-28');
+  const now=new Date();
+  const diff=now-start;
+  const days=Math.floor(diff/(1000*60*60*24));
+  document.getElementById('dayBig').textContent=days.toLocaleString();
+  document.getElementById('cW').textContent=Math.floor(days/7).toLocaleString();
+  document.getElementById('cD').textContent=days.toLocaleString();
+  document.getElementById('cM').textContent=Math.floor(days/30);
+}
+
+function startCountdown(){
+  const target=new Date('2026-04-17T00:00:00');
+  function tick(){
+    const now=new Date();
+    const diff=target-now;
+    if(diff<=0){
+      document.getElementById('cdD').textContent='🎉';
+      document.getElementById('cdH').textContent='🎉';
+      document.getElementById('cdM').textContent='🎉';
+      document.getElementById('cdS').textContent='🎉';
+      return;
+    }
+    const d=Math.floor(diff/(1000*60*60*24));
+    const h=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+    const m=Math.floor((diff%(1000*60*60))/(1000*60));
+    const s=Math.floor((diff%( 1000*60))/1000);
+    document.getElementById('cdD').textContent=String(d).padStart(2,'0');
+    document.getElementById('cdH').textContent=String(h).padStart(2,'0');
+    document.getElementById('cdM').textContent=String(m).padStart(2,'0');
+    document.getElementById('cdS').textContent=String(s).padStart(2,'0');
+  }
+  tick();
+  setInterval(tick,1000);
+}
+
+// ══════════════════════════════════════════════
+// 📸 MOMENTS — load png.1 to png.5 from GitHub
+// ══════════════════════════════════════════════
+const picSrcs=[null,null,null,null,null];
+
+function loadMomentPics(){
+  for(let i=0;i<5;i++){
+    const url=GITHUB_RAW+'png.'+(i+1);
+    const img=new Image();
+    const idx=i;
+    img.onload=()=>{
+      picSrcs[idx]=url;
+      const slot=document.getElementById('pic'+idx);
+      slot.innerHTML=`<span class="pic-num">${idx+1}</span><img src="${url}" alt="Moment ${idx+1}">`;
+    };
+    img.onerror=()=>{
+      const slot=document.getElementById('pic'+idx);
+      slot.innerHTML=`<span class="pic-num">${idx+1}</span><div class="pic-placeholder"><span>📷</span><p>png.${idx+1} not found</p></div>`;
+    };
+    img.src=url;
   }
 }
 
-/* ─── PAGES ─── */
+function openPic(e,idx){
+  e.stopPropagation();e.preventDefault();
+  if(!picSrcs[idx])return;
+  document.getElementById('picModalImg').src=picSrcs[idx];
+  document.getElementById('picModal').classList.add('show');
+}
+function closePicModal(){document.getElementById('picModal').classList.remove('show');}
+
+// ══════════════════════════════════════════════
+// 💞 MEMORIES — open pic from GitHub by name
+// ══════════════════════════════════════════════
+function openMemory(e,filename,title,caption){
+  e.stopPropagation();e.preventDefault();
+  const modal=document.getElementById('memModal');
+  const img=document.getElementById('memModalImg');
+  const loading=document.getElementById('memLoading');
+  const captionEl=document.getElementById('memCaption');
+
+  img.style.display='none';
+  loading.style.display='block';
+  captionEl.textContent='';
+  modal.classList.add('show');
+
+  const url=GITHUB_RAW+filename;
+  img.onload=()=>{
+    loading.style.display='none';
+    img.style.display='block';
+    captionEl.textContent=caption;
+  };
+  img.onerror=()=>{
+    loading.textContent='💔 Photo not found on GitHub yet';
+    captionEl.textContent=caption;
+    captionEl.style.marginTop='20px';
+  };
+  img.src=url;
+  document.getElementById('memCaption').innerHTML=`<strong style="color:var(--gold);font-style:normal;">${title}</strong><br>${caption}`;
+}
+function closeMemModal(){
+  document.getElementById('memModal').classList.remove('show');
+  document.getElementById('memLoading').textContent='Loading... 💓';
+  document.getElementById('memLoading').style.display='block';
+  document.getElementById('memModalImg').style.display='none';
+  document.getElementById('memModalImg').src='';
+}
+function stopProp(e){e.stopPropagation();}
+
+// ══════════════════════════════════════════════
+// 🧭 NAVIGATION — ontouchstart only, no click duplicate
+// ══════════════════════════════════════════════
+let lastNav=0;
 function goPage(n){
+  const now=Date.now();
+  if(now-lastNav<300)return;
+  lastNav=now;
   document.querySelectorAll('.page').forEach((p,i)=>p.classList.toggle('active',i+1===n));
   document.querySelectorAll('.nb2').forEach((b,i)=>b.classList.toggle('active',i+1===n));
 }
 
-/* ─── BURST ─── */
+// ══════════════════════════════════════════════
+// 💥 BURST
+// ══════════════════════════════════════════════
 function burst(e){
-  e.stopPropagation();
+  e.stopPropagation();e.preventDefault();
   const em=['💕','💗','💓','💖','❤️','💝'];
   const cx=e.touches?e.touches[0].clientX:e.clientX;
   const cy=e.touches?e.touches[0].clientY:e.clientY;
@@ -598,18 +753,24 @@ function burst(e){
   }
 }
 
-/* ─── GIFTS ─── */
+// ══════════════════════════════════════════════
+// 🎁 GIFTS
+// ══════════════════════════════════════════════
 const gdata=[
   {e:'💝',t:'My Heart',m:'My heart has always been yours — from the very first moment. It beats your name. It belongs to you completely, now and always.'},
   {e:'🌹',t:'A Rose For You',m:'If I could give you all the roses in the world, it still wouldn\'t match how beautiful you make every moment feel.'},
   {e:'⭐',t:'Your Own Star',m:'I\'ve named a star after you. Look up at the night sky — somewhere up there, a star is shining just for you.'},
   {e:'🎵',t:'Our Song',m:'Every time I hear this song, it takes me back to us. To that feeling. Our song is the soundtrack of everything beautiful we\'ve built.'},
-  {e:'💍',t:'A Promise',m:'I promise to love you on your best days and hold you on your worst. To laugh, grow, and choose you every single day for the rest of my life.'},
+  {e:'💍',t:'A Promise',m:'I promise to love you on your best days and hold you on your worst. To laugh, grow, and choose you every single day.'},
   {e:'🌙',t:'Forever With You',m:'Not just today — forever. Every lifetime, every version of me, would find you and fall in love with you all over again.'},
 ];
-function openGift(el,idx){
+
+let lastGift=0;
+function openGift(e,el,idx){
+  e.stopPropagation();e.preventDefault();
+  const now=Date.now();if(now-lastGift<400)return;lastGift=now;
   if(el.classList.contains('opened'))return;
-  el.classList.add('opened');el.ontouchstart=null;el.onclick=null;
+  el.classList.add('opened');
   const d=gdata[idx];
   document.getElementById('gme').textContent=d.e;
   document.getElementById('gmt').textContent=d.t;
@@ -619,7 +780,9 @@ function openGift(el,idx){
 }
 function closeGModal(){document.getElementById('gModal').classList.remove('show');}
 
-/* ─── NOTES ─── */
+// ══════════════════════════════════════════════
+// 📝 NOTES
+// ══════════════════════════════════════════════
 const reasons=[
   'The way your eyes light up when you talk about what you love.',
   'How you make every ordinary day feel extraordinary just by being in it.',
@@ -638,48 +801,14 @@ function buildNotes(){
     const el=document.createElement('div');el.className='note';
     el.style.animationDelay=i*.08+'s';
     el.innerHTML=`<div class="nnum">${i+1}</div><div class="ntxt">${r}</div>`;
-    el.addEventListener('touchstart',burst);el.addEventListener('click',burst);
+    el.addEventListener('touchstart',burst);
     w.appendChild(el);
   });
 }
 
-/* ─── TIME ─── */
-function calcTime(){
-  const start=new Date('2023-03-28');
-  const now=new Date();
-  const diff=now-start;
-  const days=Math.floor(diff/(1000*60*60*24));
-  document.getElementById('dayBig').textContent=days.toLocaleString();
-  document.getElementById('cW').textContent=Math.floor(days/7).toLocaleString();
-  document.getElementById('cD').textContent=days.toLocaleString();
-  document.getElementById('cM').textContent=Math.floor(days/30);
-}
-
-/* ─── PICS ─── */
-const picSrcs=[null,null,null,null,null];
-function loadPics(inp){
-  const files=Array.from(inp.files);
-  files.forEach(file=>{
-    const name=file.name.toLowerCase();
-    let idx=-1;
-    for(let i=1;i<=5;i++){if(name===i+'.png'||name===i+'.jpg'||name===i+'.jpeg')idx=i-1;}
-    if(idx===-1&&files.indexOf(file)<5)idx=files.indexOf(file);
-    if(idx>=0&&idx<5){
-      const url=URL.createObjectURL(file);
-      picSrcs[idx]=url;
-      const slot=document.getElementById('pic'+idx);
-      slot.innerHTML=`<span class="pic-num">${idx+1}</span><img src="${url}" alt="Memory ${idx+1}">`;
-    }
-  });
-}
-function openPic(idx){
-  if(!picSrcs[idx])return;
-  document.getElementById('picModalImg').src=picSrcs[idx];
-  document.getElementById('picModal').classList.add('show');
-}
-function closePicModal(){document.getElementById('picModal').classList.remove('show');}
-
-/* ─── FIGHTS ─── */
+// ══════════════════════════════════════════════
+// ⚔️ FIGHTS
+// ══════════════════════════════════════════════
 const fights=[
   {date:'April 14, 2023',title:'The Silent Fight',msg:'We didn\'t talk for hours, but you came back and said sorry first 🥺'},
   {date:'June 2, 2023',title:'The Misunderstanding',msg:'One message taken the wrong way — but we talked it out, like always 💬'},
@@ -712,7 +841,22 @@ function buildFights(){
   t.appendChild(end);
 }
 
-/* ─── CONFETTI ─── */
+// ══════════════════════════════════════════════
+// 🎇 BG HEARTS
+// ══════════════════════════════════════════════
+function startBgH(){
+  const c=document.getElementById('bgh');
+  const hs=['💕','💗','💓','💖','❤️','🌸','✨','🌹','💫'];
+  for(let i=0;i<16;i++){
+    const h=document.createElement('div');h.className='bh';h.textContent=hs[i%hs.length];
+    h.style.cssText=`left:${Math.random()*100}%;font-size:${.6+Math.random()}rem;animation-duration:${10+Math.random()*12}s;animation-delay:${Math.random()*15}s;`;
+    c.appendChild(h);
+  }
+}
+
+// ══════════════════════════════════════════════
+// 🎊 CONFETTI
+// ══════════════════════════════════════════════
 const cvs=document.getElementById('cvs'),ctx=cvs.getContext('2d');
 cvs.width=window.innerWidth;cvs.height=window.innerHeight;
 let conf=[];let animGoing=false;
