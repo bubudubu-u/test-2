@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>💓 3 Years of Us</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --rose:#ff4d6d;--blush:#ffb3c1;--deep:#c9184a;
+  --gold:#ffd700;--dark:#0d0008;--mauve:#9d4edd;
+  --card:rgba(255,255,255,0.04);--border:rgba(255,179,193,0.18);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+html,body{height:100%;width:100%;overflow:hidden;background:var(--dark);font-family:'Cormorant Garamond',serif;}
+
+/* ─── LOCK SCREEN ─── */
+#lockScreen{
+  position:fixed;inset:0;z-index:1000;
+  background:radial-gradient(ellipse at 50% 30%,#3d0020,#1a0010 55%,#0a0005);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+  padding:20px;
+}
+.lk-float{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+.lk-h{position:absolute;opacity:.12;animation:lfloat 7s ease-in-out infinite;}
+@keyframes lfloat{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-18px) scale(1.1);}}
+
+.lk-lock{font-size:2.8rem;animation:pulse 1.6s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
+
+.lk-title{font-family:'Dancing Script',cursive;font-size:clamp(1.8rem,6vw,3rem);
+  color:var(--blush);text-align:center;line-height:1.3;
+  text-shadow:0 0 40px rgba(255,77,109,.6);animation:glow 2s ease-in-out infinite alternate;}
+@keyframes glow{from{text-shadow:0 0 15px rgba(255,77,109,.4);}to{text-shadow:0 0 50px rgba(255,77,109,.9),0 0 80px rgba(255,77,109,.3);}}
+
+.lk-sub{color:rgba(255,179,193,.6);font-size:.9rem;letter-spacing:2px;font-style:italic;}
+
+/* Song upload on lock */
+.song-upload-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.song-upload-label{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,77,109,.15);border:1px dashed rgba(255,179,193,.4);
+  border-radius:30px;padding:9px 20px;cursor:pointer;
+  color:var(--blush);font-size:.85rem;letter-spacing:1px;
+  transition:all .3s;font-family:'Cormorant Garamond',serif;
+}
+.song-upload-label:hover{background:rgba(255,77,109,.25);border-color:var(--rose);}
+.song-upload-label input{display:none;}
+#songStatus{color:rgba(255,215,0,.7);font-size:.78rem;font-style:italic;}
+
+/* Dots */
+.dots{display:flex;gap:10px;}
+.dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--blush);background:transparent;transition:all .25s;}
+.dot.on{background:var(--rose);border-color:var(--rose);box-shadow:0 0 10px var(--rose);}
+
+/* Numpad */
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:min(260px,80vw);}
+.nb{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,179,193,.2);
+  border-radius:50%;aspect-ratio:1;
+  font-size:1.5rem;color:var(--blush);cursor:pointer;
+  transition:background .15s,transform .1s,box-shadow .15s;
+  font-family:'Playfair Display',serif;
+  display:flex;align-items:center;justify-content:center;
+  /* no delay */
+  -webkit-user-select:none;user-select:none;
+}
+.nb:active{background:rgba(255,77,109,.35);transform:scale(.93);box-shadow:0 0 15px rgba(255,77,109,.4);}
+
+#errMsg{color:var(--rose);font-size:.85rem;opacity:0;transition:opacity .3s;letter-spacing:1px;}
+#errMsg.show{opacity:1;}
+.shake{animation:shk .45s ease-in-out!important;}
+@keyframes shk{0%,100%{transform:translateX(0);}25%{transform:translateX(-10px);}75%{transform:translateX(10px);}}
+
+/* ─── UNLOCK FLASH ─── */
+#unlockFlash{
+  position:fixed;inset:0;z-index:999;
+  background:radial-gradient(circle,var(--rose),var(--deep));
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .4s;
+}
+#unlockFlash.show{opacity:1;pointer-events:all;}
+.ul-text{font-family:'Dancing Script',cursive;font-size:clamp(2rem,7vw,4.5rem);color:#fff;text-align:center;padding:20px;}
+
+/* ─── MAIN APP ─── */
+#app{display:none;position:fixed;inset:0;background:linear-gradient(135deg,#0d0005,#1a0010 50%,#0d0510);}
+
+/* BG hearts */
+.bg-hearts{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bh{position:absolute;animation:bhf linear infinite;opacity:0;font-size:1.1rem;}
+@keyframes bhf{0%{transform:translateY(100vh);opacity:0;}10%{opacity:.5;}90%{opacity:.25;}100%{transform:translateY(-8vh);opacity:0;}}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  display:flex;overflow-x:auto;gap:0;
+  background:rgba(13,0,8,.96);border-top:1px solid rgba(255,77,109,.2);
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+nav::-webkit-scrollbar{display:none;}
+.nb2{
+  flex:0 0 auto;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:10px 14px 12px;
+  background:none;border:none;color:rgba(255,179,193,.55);
+  font-size:.6rem;letter-spacing:.5px;cursor:pointer;
+  transition:color .2s,background .2s;
+  font-family:'Cormorant Garamond',serif;
+  min-width:64px;
+}
+.nb2 .ni{font-size:1.3rem;}
+.nb2:active,.nb2.active{color:#fff;background:rgba(255,77,109,.18);}
+
+/* ─── PAGES ─── */
+.pages{position:absolute;inset:0;bottom:55px;overflow:hidden;}
+.page{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;
+  padding:16px 16px 8px;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;
+  opacity:0;pointer-events:none;
+  transition:opacity .4s,transform .4s;
+  transform:translateY(16px);
+  z-index:1;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(255,77,109,.3) transparent;
+}
+.page.active{opacity:1;pointer-events:all;transform:translateY(0);}
+
+/* ─── HEADINGS ─── */
+.ptitle{
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(1.8rem,6vw,3rem);
+  text-align:center;margin-bottom:4px;
+  background:linear-gradient(135deg,var(--blush),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.pdiv{display:flex;align-items:center;gap:10px;margin-bottom:18px;width:100%;max-width:600px;}
+.pdiv::before,.pdiv::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(255,179,193,.3),transparent);}
+
+/* ─── PAGE 1: HOME ─── */
+#p1{justify-content:center;gap:10px;}
+.big-heart{font-size:clamp(5rem,18vw,9rem);line-height:1;animation:hb 1.6s ease-in-out infinite;filter:drop-shadow(0 0 25px rgba(255,77,109,.8));}
+@keyframes hb{0%,100%{transform:scale(1);}14%{transform:scale(1.18);}28%{transform:scale(1);}42%{transform:scale(1.12);}70%{transform:scale(1);}}
+.at{font-family:'Playfair Display',serif;font-size:clamp(.8rem,2.5vw,1.1rem);letter-spacing:6px;color:var(--gold);text-align:center;}
+.am{font-family:'Dancing Script',cursive;font-size:clamp(2rem,7vw,4.5rem);text-align:center;background:linear-gradient(135deg,#fff,var(--blush),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;}
+.as{font-style:italic;color:rgba(255,179,193,.75);font-size:clamp(.9rem,2.5vw,1.1rem);text-align:center;max-width:340px;line-height:1.7;}
+/* orbit */
+.orb{position:relative;width:180px;height:180px;margin:10px auto 0;}
+.or{position:absolute;inset:0;border-radius:50%;border:1px dashed rgba(255,179,193,.2);animation:os linear infinite;}
+.or:nth-child(1){animation-duration:6s;}
+.or:nth-child(2){inset:18px;animation-duration:9s;animation-direction:reverse;}
+@keyframes os{from{transform:rotate(0);}to{transform:rotate(360deg);}}
+.oi{position:absolute;top:-8px;left:calc(50% - 10px);font-size:1.2rem;}
+.oc{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:3rem;animation:hb 1.6s infinite;}
+
+/* ─── PAGE 2: LETTER ─── */
+.letter-card{
+  background:linear-gradient(135deg,rgba(255,240,243,.05),rgba(255,77,109,.03));
+  border:1px solid var(--border);border-radius:18px;
+  padding:28px 22px;max-width:580px;width:100%;
+  backdrop-filter:blur(20px);position:relative;overflow:hidden;
+}
+.letter-card::before{content:'❝';position:absolute;top:-10px;left:16px;font-size:5rem;color:rgba(255,77,109,.12);font-family:serif;line-height:1;}
+.ldate{color:var(--gold);font-style:italic;font-size:.85rem;letter-spacing:1px;margin-bottom:14px;}
+.lbody{color:rgba(255,240,243,.88);font-size:clamp(.95rem,2.5vw,1.1rem);line-height:1.9;font-style:italic;}
+.lbody p{margin-bottom:14px;}
+.lsign{font-family:'Dancing Script',cursive;font-size:1.8rem;color:var(--blush);margin-top:18px;}
+
+/* ─── PAGE 3: MEMORIES GRID ─── */
+.mgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:600px;width:100%;}
+.mc{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:18px 14px;text-align:center;cursor:pointer;
+  transition:transform .3s,box-shadow .3s,background .3s;
+  position:relative;overflow:hidden;
+}
+.mc:active{transform:scale(.96);}
+.mc:hover{transform:translateY(-6px);border-color:var(--rose);box-shadow:0 16px 35px rgba(255,77,109,.2);background:rgba(255,77,109,.07);}
+.mi{font-size:2.2rem;margin-bottom:8px;display:block;}
+.mt{font-family:'Playfair Display',serif;color:#fff;font-size:.9rem;margin-bottom:4px;}
+.md{color:rgba(255,179,193,.65);font-size:.78rem;font-style:italic;}
+
+/* ─── PAGE 4: GIFTS ─── */
+.gcontainer{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:600px;padding-bottom:8px;}
+.gbox{
+  width:calc(33% - 8px);min-width:100px;max-width:130px;
+  aspect-ratio:1;
+  background:linear-gradient(135deg,rgba(255,77,109,.14),rgba(157,78,221,.09));
+  border:2px solid rgba(255,179,193,.2);border-radius:16px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  cursor:pointer;transition:transform .3s,border-color .3s,box-shadow .3s;
+  position:relative;overflow:hidden;
+}
+.gbox:not(.opened):active{transform:scale(.94);}
+.gbox:not(.opened):hover{transform:rotate(-3deg) scale(1.04);border-color:var(--gold);box-shadow:0 8px 25px rgba(255,215,0,.2);}
+.gbox.opened{background:linear-gradient(135deg,rgba(255,215,0,.14),rgba(255,77,109,.08));border-color:var(--gold);animation:gopn .5s ease-out;}
+@keyframes gopn{0%{transform:scale(1);}50%{transform:scale(1.2) rotate(5deg);}100%{transform:scale(1);}}
+.grib{position:absolute;top:0;left:50%;transform:translateX(-50%);width:3px;height:100%;background:linear-gradient(to bottom,var(--gold),rgba(255,215,0,.2));}
+.gribh{position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);height:3px;background:linear-gradient(to right,rgba(255,215,0,.2),var(--gold),rgba(255,215,0,.2));}
+.gbow{position:absolute;top:-4px;font-size:1.2rem;animation:bnc 1s ease-in-out infinite;}
+@keyframes bnc{0%,100%{transform:scale(1);}50%{transform:scale(1.2);}}
+.gico{font-size:2rem;z-index:1;}
+.glbl{color:rgba(255,179,193,.75);font-size:.7rem;z-index:1;font-style:italic;}
+
+/* Gift modal */
+.gmodal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s;backdrop-filter:blur(12px);}
+.gmodal.show{opacity:1;pointer-events:all;}
+.gmbox{background:linear-gradient(135deg,#1a0010,#0d0520);border:1px solid rgba(255,179,193,.3);border-radius:22px;padding:32px 24px;max-width:380px;width:90%;text-align:center;transform:scale(.8);transition:transform .35s cubic-bezier(.175,.885,.32,1.275);}
+.gmodal.show .gmbox{transform:scale(1);}
+.gme{font-size:3.5rem;margin-bottom:12px;display:block;}
+.gmt{font-family:'Dancing Script',cursive;font-size:1.8rem;color:var(--gold);margin-bottom:10px;}
+.gmm{color:rgba(255,240,243,.9);font-style:italic;line-height:1.8;font-size:1rem;}
+.gmc{margin-top:20px;background:linear-gradient(135deg,var(--rose),var(--deep));border:none;border-radius:30px;padding:10px 28px;color:#fff;cursor:pointer;font-family:'Cormorant Garamond',serif;font-size:1rem;letter-spacing:1px;transition:transform .2s;}
+.gmc:active{transform:scale(.95);}
+
+/* ─── PAGE 5: REASONS ─── */
+.notes{max-width:560px;width:100%;display:flex;flex-direction:column;gap:12px;}
+.note{background:var(--card);border-left:3px solid var(--rose);border-radius:0 14px 14px 0;padding:16px 18px;position:relative;transition:background .3s,transform .25s;}
+.note:nth-child(odd){border-left-color:var(--mauve);}
+.note:active{transform:translateX(4px);}
+.nnum{position:absolute;top:-10px;left:16px;background:var(--rose);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-family:'Playfair Display',serif;}
+.note:nth-child(odd) .nnum{background:var(--mauve);}
+.ntxt{color:rgba(255,240,243,.9);font-style:italic;font-size:clamp(.9rem,2.5vw,1.05rem);line-height:1.8;}
+
+/* ─── PAGE 6: TIME ─── */
+#p6{justify-content:center;gap:12px;}
+.daybig{font-family:'Dancing Script',cursive;font-size:clamp(3rem,12vw,6rem);background:linear-gradient(135deg,var(--rose),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+.togsince{color:rgba(255,179,193,.6);font-style:italic;font-size:.85rem;letter-spacing:1px;}
+.cgrid{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:10px 0;}
+.ci{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 16px;min-width:76px;text-align:center;position:relative;overflow:hidden;}
+.ci::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--rose),var(--mauve));}
+.cn{font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);font-weight:700;line-height:1;}
+.cl{color:rgba(255,179,193,.6);font-size:.65rem;letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+.frames{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:10px;}
+.frm{border:2px solid rgba(255,215,0,.35);border-radius:14px;padding:6px;background:rgba(255,255,255,.03);font-size:3.5rem;line-height:1;cursor:pointer;box-shadow:0 0 20px rgba(255,77,109,.15);}
+
+/* ─── PAGE 7: OUR MOMENTS (PICS) ─── */
+#p7{gap:12px;}
+.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:600px;width:100%;}
+.pgrid .pic-item:first-child{grid-column:1/-1;}
+.pic-item{
+  border-radius:16px;overflow:hidden;
+  border:2px solid rgba(255,179,193,.15);
+  background:rgba(255,255,255,.03);
+  aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:transform .3s,box-shadow .3s,border-color .3s;
+  position:relative;
+}
+.pic-item:active{transform:scale(.97);}
+.pic-item:hover{transform:scale(1.02);border-color:var(--rose);box-shadow:0 10px 30px rgba(255,77,109,.25);}
+.pic-item img{width:100%;height:100%;object-fit:cover;display:block;}
+.pic-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:rgba(255,179,193,.5);width:100%;height:100%;padding:10px;text-align:center;}
+.pic-placeholder span{font-size:2rem;}
+.pic-placeholder p{font-size:.75rem;font-style:italic;}
+.pic-num{position:absolute;top:8px;left:8px;background:rgba(255,77,109,.7);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-family:'Playfair Display',serif;}
+.upload-bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:600px;width:100%;margin-bottom:6px;}
+.upl-btn{background:rgba(255,77,109,.15);border:1px dashed rgba(255,179,193,.4);border-radius:20px;padding:7px 14px;color:var(--blush);font-size:.75rem;cursor:pointer;transition:all .25s;font-family:'Cormorant Garamond',serif;display:flex;align-items:center;gap:5px;}
+.upl-btn input{display:none;}
+.upl-btn:hover{background:rgba(255,77,109,.25);border-color:var(--rose);}
+
+/* Pic modal */
+.picmodal{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:20px;}
+.picmodal.show{opacity:1;pointer-events:all;}
+.picmodal img{max-width:100%;max-height:80vh;border-radius:16px;object-fit:contain;box-shadow:0 0 50px rgba(255,77,109,.3);}
+.picclose{position:absolute;top:20px;right:20px;font-size:2rem;color:white;cursor:pointer;background:rgba(255,77,109,.4);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;}
+
+/* ─── PAGE 8: OUR FIGHTS ─── */
+#p8{gap:12px;}
+.ftimeline{max-width:560px;width:100%;position:relative;}
+.ftimeline::before{content:'';position:absolute;left:22px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--rose),var(--mauve),var(--rose));opacity:.3;}
+.fitem{display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;position:relative;}
+.fbubble{
+  min-width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,var(--rose),var(--deep));
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;flex-shrink:0;box-shadow:0 0 12px rgba(255,77,109,.3);z-index:1;
+}
+.fcontent{background:var(--card);border:1px solid var(--border);border-radius:0 14px 14px 14px;padding:12px 16px;flex:1;}
+.fdate{color:var(--gold);font-size:.8rem;font-family:'Playfair Display',serif;margin-bottom:4px;font-style:italic;}
+.ftitle{color:#fff;font-size:.95rem;margin-bottom:4px;}
+.fside{display:inline-block;background:rgba(255,77,109,.2);border:1px solid rgba(255,77,109,.4);border-radius:10px;padding:2px 10px;font-size:.72rem;color:var(--blush);font-style:italic;}
+.fmsg{color:rgba(255,179,193,.65);font-size:.82rem;font-style:italic;line-height:1.6;margin-top:6px;}
+.fend{text-align:center;padding:16px;font-family:'Dancing Script',cursive;font-size:1.4rem;color:var(--blush);}
+
+/* ─── HEARTS BURST ─── */
+.hburst{position:fixed;pointer-events:none;z-index:500;font-size:1.4rem;animation:hbexp .9s ease-out forwards;}
+@keyframes hbexp{0%{opacity:1;transform:translate(0,0) scale(1);}100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.2);}}
+
+/* CONFETTI */
+#cvs{position:fixed;inset:0;z-index:50;pointer-events:none;}
+
+/* song player hint */
+#songHint{position:fixed;top:10px;right:10px;z-index:90;background:rgba(255,77,109,.15);border:1px solid rgba(255,179,193,.2);border-radius:20px;padding:6px 14px;color:var(--blush);font-size:.75rem;display:none;align-items:center;gap:6px;cursor:pointer;}
+#songHint.show{display:flex;}
+#songHint .sh-dot{width:8px;height:8px;border-radius:50%;background:var(--rose);animation:sblink 1s ease-in-out infinite;}
+@keyframes sblink{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+/* scrollbar */
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:rgba(255,77,109,.35);border-radius:2px;}
+</style>
+</head>
+<body>
+<canvas id="cvs"></canvas>
+<audio id="bgSong" loop></audio>
+
+<!-- ─── LOCK ─── -->
+<div id="lockScreen">
+  <div class="lk-float" id="lkf"></div>
+  <div class="lk-lock">🔒</div>
+  <div class="lk-title">Something Beautiful<br>Awaits You 💓</div>
+  <div class="lk-sub">Enter the secret code</div>
+
+  <!-- Song upload on lock screen -->
+  <div class="song-upload-wrap">
+    <label class="song-upload-label">
+      🎵 Upload Your Song
+      <input type="file" accept="audio/*" id="songFile" onchange="loadSong(this)">
+    </label>
+    <div id="songStatus">No song uploaded yet</div>
+  </div>
+
+  <div class="dots" id="dots"></div>
+  <div class="numpad" id="np">
+    <button class="nb" ontouchstart="pressKey('1')" onclick="pressKey('1')">1</button>
+    <button class="nb" ontouchstart="pressKey('2')" onclick="pressKey('2')">2</button>
+    <button class="nb" ontouchstart="pressKey('3')" onclick="pressKey('3')">3</button>
+    <button class="nb" ontouchstart="pressKey('4')" onclick="pressKey('4')">4</button>
+    <button class="nb" ontouchstart="pressKey('5')" onclick="pressKey('5')">5</button>
+    <button class="nb" ontouchstart="pressKey('6')" onclick="pressKey('6')">6</button>
+    <button class="nb" ontouchstart="pressKey('7')" onclick="pressKey('7')">7</button>
+    <button class="nb" ontouchstart="pressKey('8')" onclick="pressKey('8')">8</button>
+    <button class="nb" ontouchstart="pressKey('9')" onclick="pressKey('9')">9</button>
+    <button class="nb" ontouchstart="pressKey('del')" onclick="pressKey('del')">⌫</button>
+    <button class="nb" ontouchstart="pressKey('0')" onclick="pressKey('0')">0</button>
+    <button class="nb" ontouchstart="pressKey('ok')" onclick="pressKey('ok')" style="font-size:1.3rem;">✓</button>
+  </div>
+  <div id="errMsg">Wrong code 💔 Try again</div>
+</div>
+
+<!-- unlock flash -->
+<div id="unlockFlash">
+  <div class="ul-text">💓 You're My Everything 💓<br><span style="font-size:60%;font-family:'Cormorant Garamond',serif;font-style:italic;">3 Beautiful Years...</span></div>
+</div>
+
+<!-- ─── MAIN APP ─── -->
+<div id="app">
+  <div class="bg-hearts" id="bgh"></div>
+  <div id="songHint" onclick="toggleSong()">
+    <div class="sh-dot"></div>
+    <span id="songHintTxt">♪ Playing</span>
+  </div>
+
+  <div class="pages">
+    <!-- P1 HOME -->
+    <div class="page active" id="p1">
+      <div class="at">✦ 3 Years Together ✦</div>
+      <div class="big-heart">💓</div>
+      <div class="am">Happy Anniversary</div>
+      <div class="am" style="font-size:clamp(1.5rem,5vw,3rem);margin-top:-4px;">My Love</div>
+      <p class="as">Three beautiful years of laughing, loving,<br>growing together — and forever to go.</p>
+      <div class="orb">
+        <div class="or"><span class="oi">💕</span></div>
+        <div class="or"><span class="oi" style="top:auto;bottom:-8px">🌹</span></div>
+        <div class="oc">💖</div>
+      </div>
+    </div>
+
+    <!-- P2 LETTER -->
+    <div class="page" id="p2">
+      <div class="ptitle">A Letter For You</div>
+      <div class="pdiv"><span>💌</span></div>
+      <div class="letter-card">
+        <div class="ldate">On our 3rd Anniversary...</div>
+        <div class="lbody">
+          <p>My dearest love,</p>
+          <p>Three years ago, something magical happened — you walked into my life and everything changed. The world became brighter, warmer, and full of meaning I never knew before.</p>
+          <p>Every day with you is a gift. Your smile is my sunrise. Your laughter is my favorite sound. The way you care, the way you love — it makes me fall for you all over again, every single day.</p>
+          <p>Through every season, every storm and sunshine, you've been my home. You've loved me in ways I didn't know I needed. You've shown me what it means to truly belong somewhere.</p>
+          <p>Thank you for choosing me. Today, tomorrow, and always — I am yours completely.</p>
+        </div>
+        <div class="lsign">Forever yours 💓</div>
+      </div>
+    </div>
+
+    <!-- P3 MEMORY GRID -->
+    <div class="page" id="p3">
+      <div class="ptitle">Our Memories</div>
+      <div class="pdiv"><span>✨</span></div>
+      <div class="mgrid">
+        <div class="mc" ontouchstart="burst(event)" onclick="burst(event)"><span class="mi">🌅</span><div class="mt">First Date</div><div class="md">The day everything began</div></div>
+        <div class="mc" ontouchstart="burst(event)" onclick="burst(event)"><span class="mi">🎂</span><div class="mt">Birthdays</div><div class="md">Celebrating you always</div></div>
+        <div class="mc" ontouchstart="burst(event)" onclick="burst(event)"><span class="mi">🌙</span><div class="mt">Late Nights</div><div class="md">Talking till the sun rises</div></div>
+        <div class="mc" ontouchstart="burst(event)" onclick="burst(event)"><span class="mi">🌊</span><div class="mt">Adventures</div><div class="md">Every journey with you</div></div>
+        <div class="mc" ontouchstart="burst(event)" onclick="burst(event)"><span class="mi">🎵</span><div class="mt">Our Songs</div><div class="md">That song that's forever ours</div></div>
+        <div class="mc" ontouchstart="burst(event)" onclick="burst(event)"><span class="mi">🤗</span><div class="mt">Your Hugs</div><div class="md">Where I feel safest</div></div>
+        <div class="mc" ontouchstart="burst(event)" onclick="burst(event)"><span class="mi">😂</span><div class="mt">Our Laughs</div><div class="md">No one makes me laugh like you</div></div>
+        <div class="mc" ontouchstart="burst(event)" onclick="burst(event)"><span class="mi">🌟</span><div class="mt">Our Dreams</div><div class="md">A future built for two</div></div>
+      </div>
+    </div>
+
+    <!-- P4 GIFTS -->
+    <div class="page" id="p4">
+      <div class="ptitle">Gifts For You 🎁</div>
+      <div class="pdiv"><span>🎀</span></div>
+      <p style="color:rgba(255,179,193,.6);font-style:italic;font-size:.85rem;margin-bottom:14px;text-align:center;">Tap each gift to unwrap 🎀</p>
+      <div class="gcontainer">
+        <div class="gbox" ontouchstart="openGift(this,0)" onclick="openGift(this,0)"><div class="grib"></div><div class="gribh"></div><span class="gbow">🎀</span><span class="gico">💝</span><span class="glbl">My Heart</span></div>
+        <div class="gbox" ontouchstart="openGift(this,1)" onclick="openGift(this,1)"><div class="grib"></div><div class="gribh"></div><span class="gbow">🎀</span><span class="gico">🌹</span><span class="glbl">A Rose</span></div>
+        <div class="gbox" ontouchstart="openGift(this,2)" onclick="openGift(this,2)"><div class="grib"></div><div class="gribh"></div><span class="gbow">🎀</span><span class="gico">⭐</span><span class="glbl">A Star</span></div>
+        <div class="gbox" ontouchstart="openGift(this,3)" onclick="openGift(this,3)"><div class="grib"></div><div class="gribh"></div><span class="gbow">🎀</span><span class="gico">🎵</span><span class="glbl">Our Song</span></div>
+        <div class="gbox" ontouchstart="openGift(this,4)" onclick="openGift(this,4)"><div class="grib"></div><div class="gribh"></div><span class="gbow">🎀</span><span class="gico">💍</span><span class="glbl">Promise</span></div>
+        <div class="gbox" ontouchstart="openGift(this,5)" onclick="openGift(this,5)"><div class="grib"></div><div class="gribh"></div><span class="gbow">🎀</span><span class="gico">🌙</span><span class="glbl">Forever</span></div>
+      </div>
+    </div>
+
+    <!-- P5 REASONS -->
+    <div class="page" id="p5">
+      <div class="ptitle">Why I Love You</div>
+      <div class="pdiv"><span>📝</span></div>
+      <div class="notes" id="notesWrap"></div>
+    </div>
+
+    <!-- P6 TIME -->
+    <div class="page" id="p6">
+      <div class="ptitle">3 Years of Love</div>
+      <div class="pdiv"><span>⏳</span></div>
+      <div class="daybig" id="dayBig">---</div>
+      <div class="togsince">days together &amp; counting 💓</div>
+      <div class="cgrid">
+        <div class="ci"><div class="cn" id="cY">3</div><div class="cl">Years</div></div>
+        <div class="ci"><div class="cn" id="cM">36</div><div class="cl">Months</div></div>
+        <div class="ci"><div class="cn" id="cW">--</div><div class="cl">Weeks</div></div>
+        <div class="ci"><div class="cn" id="cD">--</div><div class="cl">Days</div></div>
+      </div>
+      <p style="color:rgba(255,179,193,.6);font-style:italic;font-size:.9rem;">Every second with you is a treasure 💓</p>
+      <div class="frames">
+        <div class="frm" ontouchstart="burst(event)" onclick="burst(event)">💑</div>
+        <div class="frm" ontouchstart="burst(event)" onclick="burst(event)">🌹</div>
+        <div class="frm" ontouchstart="burst(event)" onclick="burst(event)">💕</div>
+      </div>
+    </div>
+
+    <!-- P7 OUR MOMENTS (PICS) -->
+    <div class="page" id="p7">
+      <div class="ptitle">Our Moments 📸</div>
+      <div class="pdiv"><span>🌸</span></div>
+      <div class="upload-bar">
+        <label class="upl-btn">📁 Upload 1.png–5.png <input type="file" accept="image/*" multiple onchange="loadPics(this)"></label>
+      </div>
+      <div class="pgrid" id="picGrid">
+        <!-- 5 pic slots -->
+        <div class="pic-item" id="pic0" ontouchstart="openPic(0)" onclick="openPic(0)"><span class="pic-num">1</span><div class="pic-placeholder"><span>📷</span><p>Upload 1.png</p></div></div>
+        <div class="pic-item" id="pic1" ontouchstart="openPic(1)" onclick="openPic(1)"><span class="pic-num">2</span><div class="pic-placeholder"><span>📷</span><p>Upload 2.png</p></div></div>
+        <div class="pic-item" id="pic2" ontouchstart="openPic(2)" onclick="openPic(2)"><span class="pic-num">3</span><div class="pic-placeholder"><span>📷</span><p>Upload 3.png</p></div></div>
+        <div class="pic-item" id="pic3" ontouchstart="openPic(3)" onclick="openPic(3)"><span class="pic-num">4</span><div class="pic-placeholder"><span>📷</span><p>Upload 4.png</p></div></div>
+        <div class="pic-item" id="pic4" ontouchstart="openPic(4)" onclick="openPic(4)"><span class="pic-num">5</span><div class="pic-placeholder"><span>📷</span><p>Upload 5.png</p></div></div>
+      </div>
+    </div>
+
+    <!-- P8 OUR FIGHTS -->
+    <div class="page" id="p8">
+      <div class="ptitle">Fights We Survived 💪</div>
+      <div class="pdiv"><span>🕊️</span></div>
+      <p style="color:rgba(255,179,193,.6);font-style:italic;font-size:.82rem;margin-bottom:14px;text-align:center;">Every fight only brought us closer 💓</p>
+      <div class="ftimeline" id="fightTimeline"></div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav id="mainnav">
+    <button class="nb2 active" ontouchstart="goPage(1)" onclick="goPage(1)"><span class="ni">💓</span>Home</button>
+    <button class="nb2" ontouchstart="goPage(2)" onclick="goPage(2)"><span class="ni">💌</span>Letter</button>
+    <button class="nb2" ontouchstart="goPage(3)" onclick="goPage(3)"><span class="ni">✨</span>Memories</button>
+    <button class="nb2" ontouchstart="goPage(4)" onclick="goPage(4)"><span class="ni">🎁</span>Gifts</button>
+    <button class="nb2" ontouchstart="goPage(5)" onclick="goPage(5)"><span class="ni">📝</span>Reasons</button>
+    <button class="nb2" ontouchstart="goPage(6)" onclick="goPage(6)"><span class="ni">⏳</span>Time</button>
+    <button class="nb2" ontouchstart="goPage(7)" onclick="goPage(7)"><span class="ni">📸</span>Moments</button>
+    <button class="nb2" ontouchstart="goPage(8)" onclick="goPage(8)"><span class="ni">🕊️</span>Fights</button>
+  </nav>
+</div>
+
+<!-- Gift modal -->
+<div class="gmodal" id="gModal">
+  <div class="gmbox">
+    <span class="gme" id="gme">💝</span>
+    <div class="gmt" id="gmt">Title</div>
+    <div class="gmm" id="gmm">msg</div>
+    <button class="gmc" ontouchstart="closeGModal()" onclick="closeGModal()">Close 💓</button>
+  </div>
+</div>
+
+<!-- Pic modal -->
+<div class="picmodal" id="picModal" ontouchstart="closePicModal()" onclick="closePicModal()">
+  <button class="picclose" ontouchstart="closePicModal()" onclick="closePicModal()">✕</button>
+  <img id="picModalImg" src="" alt="">
+</div>
+
+<script>
+/* ─── LOCK ─── */
+const CODE='271713';let entered='';
+// build dots
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<6;i++){const d=document.createElement('div');d.className='dot';d.id='d'+i;dotsEl.appendChild(d);}
+// float hearts on lock
+const lkf=document.getElementById('lkf');
+['💕','💗','💓','💖','❤️','🌹','✨'].forEach((h,i)=>{
+  const el=document.createElement('div');el.className='lk-h';el.textContent=h;
+  el.style.cssText=`left:${10+i*13}%;top:${5+i*12}%;font-size:${.8+Math.random()*.8}rem;animation-delay:${i*.9}s;animation-duration:${5+i}s;`;
+  lkf.appendChild(el);
+});
+function updDots(){for(let i=0;i<6;i++)document.getElementById('d'+i).classList.toggle('on',i<entered.length);}
+let lastKey=0;
+function pressKey(n){
+  const now=Date.now();if(now-lastKey<80)return;lastKey=now;
+  if(n==='del'){entered=entered.slice(0,-1);updDots();}
+  else if(n==='ok'){checkCode();}
+  else{if(entered.length<6){entered+=n;updDots();if(entered.length===6)setTimeout(checkCode,250);}}
+}
+function checkCode(){
+  if(entered===CODE){unlock();}
+  else{
+    const err=document.getElementById('errMsg');err.classList.add('show');
+    document.getElementById('np').classList.add('shake');
+    setTimeout(()=>{document.getElementById('np').classList.remove('shake');err.classList.remove('show');entered='';updDots();},900);
+  }
+}
+
+/* ─── SONG ─── */
+const audio=document.getElementById('bgSong');
+let songLoaded=false;
+function loadSong(inp){
+  if(!inp.files[0])return;
+  const url=URL.createObjectURL(inp.files[0]);
+  audio.src=url;audio.volume=0.45;
+  songLoaded=true;
+  document.getElementById('songStatus').textContent='✓ "'+inp.files[0].name+'" ready!';
+}
+function playSong(){
+  if(songLoaded){
+    audio.play().catch(()=>{});
+    document.getElementById('songHint').classList.add('show');
+  }
+}
+let songPaused=false;
+function toggleSong(){
+  if(audio.paused){audio.play();songPaused=false;document.getElementById('songHintTxt').textContent='♪ Playing';}
+  else{audio.pause();songPaused=true;document.getElementById('songHintTxt').textContent='♪ Paused';}
+}
+
+/* ─── UNLOCK ─── */
+function unlock(){
+  const fl=document.getElementById('unlockFlash');
+  fl.classList.add('show');confettiBurst();
+  setTimeout(()=>{
+    document.getElementById('lockScreen').style.display='none';
+    fl.style.transition='opacity .7s';fl.style.opacity='0';
+    document.getElementById('app').style.display='block';
+    startBgH();buildNotes();calcTime();buildFights();
+    playSong();
+    setTimeout(()=>{fl.style.display='none';},700);
+  },1600);
+}
+
+/* ─── BG HEARTS ─── */
+function startBgH(){
+  const c=document.getElementById('bgh');
+  const hs=['💕','💗','💓','💖','❤️','🌸','✨','🌹','💫'];
+  for(let i=0;i<16;i++){
+    const h=document.createElement('div');h.className='bh';h.textContent=hs[i%hs.length];
+    h.style.cssText=`left:${Math.random()*100}%;font-size:${.6+Math.random()}rem;animation-duration:${10+Math.random()*12}s;animation-delay:${Math.random()*15}s;`;
+    c.appendChild(h);
+  }
+}
+
+/* ─── PAGES ─── */
+function goPage(n){
+  document.querySelectorAll('.page').forEach((p,i)=>p.classList.toggle('active',i+1===n));
+  document.querySelectorAll('.nb2').forEach((b,i)=>b.classList.toggle('active',i+1===n));
+}
+
+/* ─── BURST ─── */
+function burst(e){
+  e.stopPropagation();
+  const em=['💕','💗','💓','💖','❤️','💝'];
+  const cx=e.touches?e.touches[0].clientX:e.clientX;
+  const cy=e.touches?e.touches[0].clientY:e.clientY;
+  for(let i=0;i<10;i++){
+    const el=document.createElement('div');el.className='hburst';
+    const a=(Math.PI*2*i)/10;const d=50+Math.random()*70;
+    el.style.cssText=`left:${cx}px;top:${cy}px;--tx:${Math.cos(a)*d}px;--ty:${Math.sin(a)*d-40}px;animation-delay:${Math.random()*.15}s;`;
+    el.textContent=em[Math.floor(Math.random()*em.length)];
+    document.body.appendChild(el);setTimeout(()=>el.remove(),1000);
+  }
+}
+
+/* ─── GIFTS ─── */
+const gdata=[
+  {e:'💝',t:'My Heart',m:'My heart has always been yours — from the very first moment. It beats your name. It belongs to you completely, now and always.'},
+  {e:'🌹',t:'A Rose For You',m:'If I could give you all the roses in the world, it still wouldn\'t match how beautiful you make every moment feel.'},
+  {e:'⭐',t:'Your Own Star',m:'I\'ve named a star after you. Look up at the night sky — somewhere up there, a star is shining just for you.'},
+  {e:'🎵',t:'Our Song',m:'Every time I hear this song, it takes me back to us. To that feeling. Our song is the soundtrack of everything beautiful we\'ve built.'},
+  {e:'💍',t:'A Promise',m:'I promise to love you on your best days and hold you on your worst. To laugh, grow, and choose you every single day for the rest of my life.'},
+  {e:'🌙',t:'Forever With You',m:'Not just today — forever. Every lifetime, every version of me, would find you and fall in love with you all over again.'},
+];
+function openGift(el,idx){
+  if(el.classList.contains('opened'))return;
+  el.classList.add('opened');el.ontouchstart=null;el.onclick=null;
+  const d=gdata[idx];
+  document.getElementById('gme').textContent=d.e;
+  document.getElementById('gmt').textContent=d.t;
+  document.getElementById('gmm').textContent=d.m;
+  document.getElementById('gModal').classList.add('show');
+  confettiBurst();burst({clientX:window.innerWidth/2,clientY:window.innerHeight/2});
+}
+function closeGModal(){document.getElementById('gModal').classList.remove('show');}
+
+/* ─── NOTES ─── */
+const reasons=[
+  'The way your eyes light up when you talk about what you love.',
+  'How you make every ordinary day feel extraordinary just by being in it.',
+  'Your laugh — it\'s the most beautiful sound I\'ve ever heard.',
+  'The way you love deeply, fiercely, and without holding back.',
+  'How you make me feel seen, heard, and understood like no one ever has.',
+  'Your strength — you face every challenge with grace I deeply admire.',
+  'The tiny, thoughtful things you do that you don\'t even realize.',
+  'How safe I feel when I\'m with you. You\'re my home.',
+  'Your kindness — the way you treat everyone around you with such warmth.',
+  'Simply because you are you — and you are everything I ever dreamed of.',
+];
+function buildNotes(){
+  const w=document.getElementById('notesWrap');
+  reasons.forEach((r,i)=>{
+    const el=document.createElement('div');el.className='note';
+    el.style.animationDelay=i*.08+'s';
+    el.innerHTML=`<div class="nnum">${i+1}</div><div class="ntxt">${r}</div>`;
+    el.addEventListener('touchstart',burst);el.addEventListener('click',burst);
+    w.appendChild(el);
+  });
+}
+
+/* ─── TIME ─── */
+function calcTime(){
+  const start=new Date('2023-03-28');
+  const now=new Date();
+  const diff=now-start;
+  const days=Math.floor(diff/(1000*60*60*24));
+  document.getElementById('dayBig').textContent=days.toLocaleString();
+  document.getElementById('cW').textContent=Math.floor(days/7).toLocaleString();
+  document.getElementById('cD').textContent=days.toLocaleString();
+  document.getElementById('cM').textContent=Math.floor(days/30);
+}
+
+/* ─── PICS ─── */
+const picSrcs=[null,null,null,null,null];
+function loadPics(inp){
+  const files=Array.from(inp.files);
+  files.forEach(file=>{
+    const name=file.name.toLowerCase();
+    let idx=-1;
+    for(let i=1;i<=5;i++){if(name===i+'.png'||name===i+'.jpg'||name===i+'.jpeg')idx=i-1;}
+    if(idx===-1&&files.indexOf(file)<5)idx=files.indexOf(file);
+    if(idx>=0&&idx<5){
+      const url=URL.createObjectURL(file);
+      picSrcs[idx]=url;
+      const slot=document.getElementById('pic'+idx);
+      slot.innerHTML=`<span class="pic-num">${idx+1}</span><img src="${url}" alt="Memory ${idx+1}">`;
+    }
+  });
+}
+function openPic(idx){
+  if(!picSrcs[idx])return;
+  document.getElementById('picModalImg').src=picSrcs[idx];
+  document.getElementById('picModal').classList.add('show');
+}
+function closePicModal(){document.getElementById('picModal').classList.remove('show');}
+
+/* ─── FIGHTS ─── */
+const fights=[
+  {date:'April 14, 2023',title:'The Silent Fight',msg:'We didn\'t talk for hours, but you came back and said sorry first 🥺'},
+  {date:'June 2, 2023',title:'The Misunderstanding',msg:'One message taken the wrong way — but we talked it out, like always 💬'},
+  {date:'August 20, 2023',title:'The Jealousy One',msg:'She was worried, and I didn\'t understand — until I did. I\'m sorry 🙏'},
+  {date:'October 8, 2023',title:'The Busy Week',msg:'Work stress spilled over. But you were patient with me 💓'},
+  {date:'December 25, 2023',title:'Christmas Tension',msg:'Even the happiest day had a moment — but we fixed it before midnight 🌙'},
+  {date:'February 14, 2024',title:'Valentine\'s Expectations',msg:'I should have planned better. You deserved more — and I promised to do better 🌹'},
+  {date:'May 5, 2024',title:'The Phone Fight',msg:'Too much screen time, too little us-time. We made a new rule that day 📵'},
+  {date:'July 18, 2024',title:'The Words That Hurt',msg:'We both said things we didn\'t mean. But we stayed, and that means everything 💪'},
+  {date:'September 30, 2024',title:'The Distance Day',msg:'We felt far apart even when together — but we talked and held on tighter 🤝'},
+  {date:'January 12, 2025',title:'The Big Argument',msg:'Our toughest one yet. But we came out stronger, more honest, more in love 💕'},
+];
+function buildFights(){
+  const t=document.getElementById('fightTimeline');
+  const icons=['😤','😶','😬','😔','😥','😢','😠','🥺','😞','💥'];
+  fights.forEach((f,i)=>{
+    const el=document.createElement('div');el.className='fitem';
+    el.innerHTML=`
+      <div class="fbubble">${icons[i]}</div>
+      <div class="fcontent">
+        <div class="fdate">${f.date}</div>
+        <div class="ftitle">${f.title}</div>
+        <div class="fside">Her side: She was right 💁‍♀️</div>
+        <div class="fmsg">${f.msg}</div>
+      </div>`;
+    t.appendChild(el);
+  });
+  const end=document.createElement('div');end.className='fend';
+  end.textContent='Every fight = proof we care 💓 We always come back to each other';
+  t.appendChild(end);
+}
+
+/* ─── CONFETTI ─── */
+const cvs=document.getElementById('cvs'),ctx=cvs.getContext('2d');
+cvs.width=window.innerWidth;cvs.height=window.innerHeight;
+let conf=[];let animGoing=false;
+function confettiBurst(){
+  cvs.width=window.innerWidth;cvs.height=window.innerHeight;
+  const cols=['#ff4d6d','#ffb3c1','#ffd700','#ff85a1','#c9184a','#9d4edd','#fff'];
+  for(let i=0;i<100;i++)conf.push({x:Math.random()*cvs.width,y:-8,r:Math.random()*7+3,c:cols[i%cols.length],vx:(Math.random()-.5)*4,vy:Math.random()*3+1.5,a:1});
+  if(!animGoing){animGoing=true;animConf();}
+}
+function animConf(){
+  ctx.clearRect(0,0,cvs.width,cvs.height);
+  conf.forEach(c=>{c.x+=c.vx;c.y+=c.vy;c.a-=.009;ctx.globalAlpha=Math.max(0,c.a);ctx.fillStyle=c.c;ctx.beginPath();ctx.arc(c.x,c.y,c.r,0,Math.PI*2);ctx.fill();});
+  ctx.globalAlpha=1;conf=conf.filter(c=>c.a>0);
+  if(conf.length>0)requestAnimationFrame(animConf);else animGoing=false;
+}
+window.addEventListener('resize',()=>{cvs.width=window.innerWidth;cvs.height=window.innerHeight;});
+</script>
+</body>
+</html>
