@@ -11,7 +11,7 @@
   --gold:#ffd700;--dark:#0d0008;--mauve:#9d4edd;
   --card:rgba(255,255,255,0.04);--border:rgba(255,179,193,0.18);
 }
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;width:100%;overflow:hidden;background:var(--dark);font-family:'Cormorant Garamond',serif;}
 
 /* ─── LOCK SCREEN ─── */
@@ -73,6 +73,7 @@ nav{
   background:rgba(13,0,8,.96);border-top:1px solid rgba(255,77,109,.2);
   -webkit-overflow-scrolling:touch;
   scrollbar-width:none;
+  touch-action:pan-x;
 }
 nav::-webkit-scrollbar{display:none;}
 .nb2{
@@ -101,8 +102,13 @@ nav::-webkit-scrollbar{display:none;}
   z-index:1;
   scrollbar-width:thin;
   scrollbar-color:rgba(255,77,109,.3) transparent;
+  touch-action:pan-y;
+  overscroll-behavior:contain;
 }
 .page.active{opacity:1;pointer-events:all;transform:translateY(0);}
+
+/* Buttons — manipulation only on interactive elements */
+.nb,.nb2,.mc,.gbox,.frm,.note,.pic-item,.fitem,.gmc,.memclose,.picclose{touch-action:manipulation;}
 
 /* ─── HEADINGS ─── */
 .ptitle{
@@ -661,7 +667,7 @@ const picSrcs=[null,null,null,null,null];
 
 function loadMomentPics(){
   for(let i=0;i<5;i++){
-    const url=GITHUB_RAW+'png.'+(i+1);
+    const url=GITHUB_RAW+(i+1)+'.png';
     const img=new Image();
     const idx=i;
     img.onload=()=>{
@@ -671,7 +677,7 @@ function loadMomentPics(){
     };
     img.onerror=()=>{
       const slot=document.getElementById('pic'+idx);
-      slot.innerHTML=`<span class="pic-num">${idx+1}</span><div class="pic-placeholder"><span>📷</span><p>png.${idx+1} not found</p></div>`;
+      slot.innerHTML=`<span class="pic-num">${idx+1}</span><div class="pic-placeholder"><span>📷</span><p>${idx+1}.png not found</p></div>`;
     };
     img.src=url;
   }
