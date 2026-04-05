@@ -12,47 +12,23 @@
   --card:rgba(255,255,255,0.04);--border:rgba(255,179,193,0.18);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-
-/* ─── html/body: only lock screen initially, no overflow issues ─── */
-html,body{
-  height:100%;width:100%;
-  overflow:hidden;
-  background:var(--dark);
-  font-family:'Cormorant Garamond',serif;
-}
+html,body{height:100%;width:100%;overflow:hidden;background:var(--dark);font-family:'Cormorant Garamond',serif;}
 
 /* ─── LOCK SCREEN ─── */
-#lockScreen{
-  position:fixed;inset:0;z-index:1000;
-  background:radial-gradient(ellipse at 50% 30%,#3d0020,#1a0010 55%,#0a0005);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
-  padding:20px;
-  overflow:hidden; /* lock screen itself no scroll */
-}
+#lockScreen{position:fixed;inset:0;z-index:1000;background:radial-gradient(ellipse at 50% 30%,#3d0020,#1a0010 55%,#0a0005);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:20px;overflow:hidden;}
 .lk-float{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
 .lk-h{position:absolute;opacity:.12;animation:lfloat 7s ease-in-out infinite;}
 @keyframes lfloat{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-18px) scale(1.1);}}
 .lk-lock{font-size:2.8rem;animation:pulse 1.6s ease-in-out infinite;}
 @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
-.lk-title{font-family:'Dancing Script',cursive;font-size:clamp(1.8rem,6vw,3rem);
-  color:var(--blush);text-align:center;line-height:1.3;
-  text-shadow:0 0 40px rgba(255,77,109,.6);animation:glow 2s ease-in-out infinite alternate;}
+.lk-title{font-family:'Dancing Script',cursive;font-size:clamp(1.8rem,6vw,3rem);color:var(--blush);text-align:center;line-height:1.3;text-shadow:0 0 40px rgba(255,77,109,.6);animation:glow 2s ease-in-out infinite alternate;}
 @keyframes glow{from{text-shadow:0 0 15px rgba(255,77,109,.4);}to{text-shadow:0 0 50px rgba(255,77,109,.9),0 0 80px rgba(255,77,109,.3);}}
 .lk-sub{color:rgba(255,179,193,.6);font-size:.9rem;letter-spacing:2px;font-style:italic;}
 .dots{display:flex;gap:10px;}
 .dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--blush);background:transparent;transition:all .25s;}
 .dot.on{background:var(--rose);border-color:var(--rose);box-shadow:0 0 10px var(--rose);}
 .numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:min(260px,80vw);}
-.nb{
-  background:rgba(255,255,255,.05);border:1px solid rgba(255,179,193,.2);
-  border-radius:50%;aspect-ratio:1;
-  font-size:1.5rem;color:var(--blush);cursor:pointer;
-  transition:background .15s,transform .1s,box-shadow .15s;
-  font-family:'Playfair Display',serif;
-  display:flex;align-items:center;justify-content:center;
-  -webkit-user-select:none;user-select:none;
-  touch-action:manipulation;
-}
+.nb{background:rgba(255,255,255,.05);border:1px solid rgba(255,179,193,.2);border-radius:50%;aspect-ratio:1;font-size:1.5rem;color:var(--blush);cursor:pointer;transition:background .15s,transform .1s,box-shadow .15s;font-family:'Playfair Display',serif;display:flex;align-items:center;justify-content:center;-webkit-user-select:none;user-select:none;touch-action:manipulation;}
 .nb:active{background:rgba(255,77,109,.35);transform:scale(.93);box-shadow:0 0 15px rgba(255,77,109,.4);}
 #errMsg{color:var(--rose);font-size:.85rem;opacity:0;transition:opacity .3s;letter-spacing:1px;}
 #errMsg.show{opacity:1;}
@@ -60,94 +36,35 @@ html,body{
 @keyframes shk{0%,100%{transform:translateX(0);}25%{transform:translateX(-10px);}75%{transform:translateX(10px);}}
 
 /* ─── UNLOCK FLASH ─── */
-#unlockFlash{
-  position:fixed;inset:0;z-index:999;
-  background:radial-gradient(circle,var(--rose),var(--deep));
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity .4s;
-}
+#unlockFlash{position:fixed;inset:0;z-index:999;background:radial-gradient(circle,var(--rose),var(--deep));display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s;}
 #unlockFlash.show{opacity:1;pointer-events:all;}
 .ul-text{font-family:'Dancing Script',cursive;font-size:clamp(2rem,7vw,4.5rem);color:#fff;text-align:center;padding:20px;}
 
 /* ─── MAIN APP ─── */
-#app{
-  display:none;
-  position:fixed;inset:0;
-  background:linear-gradient(135deg,#0d0005,#1a0010 50%,#0d0510);
-  /* No overflow here — pages handle their own scroll */
-}
+#app{display:none;position:fixed;inset:0;background:linear-gradient(135deg,#0d0005,#1a0010 50%,#0d0510);}
 .bg-hearts{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
 .bh{position:absolute;animation:bhf linear infinite;opacity:0;font-size:1.1rem;}
 @keyframes bhf{0%{transform:translateY(100vh);opacity:0;}10%{opacity:.5;}90%{opacity:.25;}100%{transform:translateY(-8vh);opacity:0;}}
 
 /* ─── NAV ─── */
-nav{
-  position:fixed;bottom:0;left:0;right:0;z-index:100;
-  display:flex;overflow-x:auto;gap:0;
-  background:rgba(13,0,8,.96);border-top:1px solid rgba(255,77,109,.2);
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
-  touch-action:pan-x;
-}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;overflow-x:auto;gap:0;background:rgba(13,0,8,.96);border-top:1px solid rgba(255,77,109,.2);-webkit-overflow-scrolling:touch;scrollbar-width:none;touch-action:pan-x;}
 nav::-webkit-scrollbar{display:none;}
-.nb2{
-  flex:0 0 auto;
-  display:flex;flex-direction:column;align-items:center;gap:2px;
-  padding:10px 14px 12px;
-  background:none;border:none;color:rgba(255,179,193,.55);
-  font-size:.6rem;letter-spacing:.5px;cursor:pointer;
-  transition:color .2s,background .2s;
-  font-family:'Cormorant Garamond',serif;
-  min-width:64px;
-  touch-action:manipulation;
-}
+.nb2{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 14px 12px;background:none;border:none;color:rgba(255,179,193,.55);font-size:.6rem;letter-spacing:.5px;cursor:pointer;transition:color .2s,background .2s;font-family:'Cormorant Garamond',serif;min-width:64px;touch-action:manipulation;}
 .nb2 .ni{font-size:1.3rem;}
 .nb2.active{color:#fff;background:rgba(255,77,109,.18);}
 
 /* ─── PAGES CONTAINER ─── */
-.pages{
-  position:fixed;
-  top:0;left:0;right:0;
-  bottom:55px; /* nav height */
-  overflow:hidden; /* container does NOT scroll */
-  z-index:1;
-}
+.pages{position:fixed;top:0;left:0;right:0;bottom:55px;overflow:hidden;z-index:1;}
 
-/* ─── EACH PAGE: scrollable independently ─── */
-.page{
-  position:absolute;
-  inset:0;
-  display:flex;flex-direction:column;align-items:center;
-  padding:16px 16px 16px;
-  /* KEY FIX: each page scrolls on its own */
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-  overscroll-behavior-y:contain;
-  opacity:0;pointer-events:none;
-  transition:opacity .35s,transform .35s;
-  transform:translateY(14px);
-  z-index:1;
-  scrollbar-width:thin;
-  scrollbar-color:rgba(255,77,109,.3) transparent;
-  /* allow vertical pan on all pages */
-  touch-action:pan-y;
-}
+/* ─── EACH PAGE ─── */
+.page{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding:16px 16px 16px;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;opacity:0;pointer-events:none;transition:opacity .35s,transform .35s;transform:translateY(14px);z-index:1;scrollbar-width:thin;scrollbar-color:rgba(255,77,109,.3) transparent;touch-action:pan-y;}
 .page.active{opacity:1;pointer-events:all;transform:translateY(0);}
 .page::-webkit-scrollbar{width:3px;}
 .page::-webkit-scrollbar-thumb{background:rgba(255,77,109,.35);border-radius:2px;}
-
-/* Buttons */
 .nb,.nb2,.mc,.gbox,.frm,.note,.pic-item,.fitem,.gmc,.memclose,.picclose{touch-action:manipulation;}
 
 /* ─── HEADINGS ─── */
-.ptitle{
-  font-family:'Dancing Script',cursive;
-  font-size:clamp(1.8rem,6vw,3rem);
-  text-align:center;margin-bottom:4px;
-  background:linear-gradient(135deg,var(--blush),var(--gold));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  flex-shrink:0;
-}
+.ptitle{font-family:'Dancing Script',cursive;font-size:clamp(1.8rem,6vw,3rem);text-align:center;margin-bottom:4px;background:linear-gradient(135deg,var(--blush),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex-shrink:0;}
 .pdiv{display:flex;align-items:center;gap:10px;margin-bottom:18px;width:100%;max-width:600px;flex-shrink:0;}
 .pdiv::before,.pdiv::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(255,179,193,.3),transparent);}
 
@@ -167,36 +84,21 @@ nav::-webkit-scrollbar{display:none;}
 .oc{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:3rem;animation:hb 1.6s infinite;}
 
 /* ─── PAGE 2: LETTER ─── */
-.letter-card{
-  background:linear-gradient(135deg,rgba(255,240,243,.05),rgba(255,77,109,.03));
-  border:1px solid var(--border);border-radius:18px;
-  padding:28px 22px;max-width:580px;width:100%;
-  backdrop-filter:blur(20px);position:relative;overflow:hidden;
-  flex-shrink:0;
-  /* extra bottom padding so last line not hidden behind arrows */
-  margin-bottom:70px;
-}
+.letter-card{background:linear-gradient(135deg,rgba(255,240,243,.05),rgba(255,77,109,.03));border:1px solid var(--border);border-radius:18px;padding:28px 22px;max-width:580px;width:100%;backdrop-filter:blur(20px);position:relative;overflow:hidden;flex-shrink:0;margin-bottom:70px;}
 .letter-card::before{content:'❝';position:absolute;top:-10px;left:16px;font-size:5rem;color:rgba(255,77,109,.12);font-family:serif;line-height:1;}
 .ldate{color:var(--gold);font-style:italic;font-size:.85rem;letter-spacing:1px;margin-bottom:14px;}
 .lbody{color:rgba(255,240,243,.88);font-size:clamp(.95rem,2.5vw,1.1rem);line-height:1.9;font-style:italic;}
 .lbody p{margin-bottom:14px;}
 .lsign{font-family:'Dancing Script',cursive;font-size:1.8rem;color:var(--blush);margin-top:18px;}
 
-/* ─── PAGE 3: MEMORIES GRID ─── */
+/* ─── PAGE 3: MEMORIES ─── */
 .mgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:600px;width:100%;flex-shrink:0;}
-.mc{
-  background:var(--card);border:1px solid var(--border);border-radius:14px;
-  padding:14px 12px;text-align:center;cursor:pointer;
-  transition:transform .3s,box-shadow .3s,background .3s;
-  position:relative;overflow:hidden;
-}
+.mc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 12px;text-align:center;cursor:pointer;transition:transform .3s,box-shadow .3s,background .3s;position:relative;overflow:hidden;}
 .mc:active{transform:scale(.96);}
 .mc:hover{transform:translateY(-4px);border-color:var(--rose);box-shadow:0 14px 30px rgba(255,77,109,.2);}
 .mi{font-size:2rem;margin-bottom:6px;display:block;}
 .mt{font-family:'Playfair Display',serif;color:#fff;font-size:.88rem;margin-bottom:4px;}
 .md{color:rgba(255,179,193,.65);font-size:.76rem;font-style:italic;line-height:1.5;}
-
-/* Memory pic modal */
 .memmodal{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:20px;backdrop-filter:blur(14px);}
 .memmodal.show{opacity:1;pointer-events:all;}
 .memmodal img{max-width:100%;max-height:62vh;border-radius:16px;object-fit:contain;box-shadow:0 0 50px rgba(255,77,109,.4);}
@@ -206,15 +108,7 @@ nav::-webkit-scrollbar{display:none;}
 
 /* ─── PAGE 4: GIFTS ─── */
 .gcontainer{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:600px;padding-bottom:8px;flex-shrink:0;}
-.gbox{
-  width:calc(33% - 8px);min-width:100px;max-width:130px;
-  aspect-ratio:1;
-  background:linear-gradient(135deg,rgba(255,77,109,.14),rgba(157,78,221,.09));
-  border:2px solid rgba(255,179,193,.2);border-radius:16px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
-  cursor:pointer;transition:transform .3s,border-color .3s,box-shadow .3s;
-  position:relative;overflow:hidden;
-}
+.gbox{width:calc(33% - 8px);min-width:100px;max-width:130px;aspect-ratio:1;background:linear-gradient(135deg,rgba(255,77,109,.14),rgba(157,78,221,.09));border:2px solid rgba(255,179,193,.2);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;transition:transform .3s,border-color .3s,box-shadow .3s;position:relative;overflow:hidden;}
 .gbox:not(.opened):active{transform:scale(.94);}
 .gbox:not(.opened):hover{transform:rotate(-3deg) scale(1.04);border-color:var(--gold);box-shadow:0 8px 25px rgba(255,215,0,.2);}
 .gbox.opened{background:linear-gradient(135deg,rgba(255,215,0,.14),rgba(255,77,109,.08));border-color:var(--gold);animation:gopn .5s ease-out;}
@@ -244,16 +138,57 @@ nav::-webkit-scrollbar{display:none;}
 .note:nth-child(odd) .nnum{background:var(--mauve);}
 .ntxt{color:rgba(255,240,243,.9);font-style:italic;font-size:clamp(.9rem,2.5vw,1.05rem);line-height:1.8;}
 
-/* ─── PAGE 6: TIME ─── */
-#p6{justify-content:flex-start;gap:12px;padding-bottom:20px;}
-.daybig{font-family:'Dancing Script',cursive;font-size:clamp(3rem,12vw,6rem);background:linear-gradient(135deg,var(--rose),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;flex-shrink:0;}
-.togsince{color:rgba(255,179,193,.6);font-style:italic;font-size:.85rem;letter-spacing:1px;flex-shrink:0;}
-.cgrid{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:10px 0;flex-shrink:0;}
-.ci{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 16px;min-width:76px;text-align:center;position:relative;overflow:hidden;}
-.ci::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--rose),var(--mauve));}
-.cn{font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);font-weight:700;line-height:1;}
-.cl{color:rgba(255,179,193,.6);font-size:.65rem;letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
-.countdown-wrap{background:linear-gradient(135deg,rgba(255,77,109,.12),rgba(157,78,221,.08));border:1px solid rgba(255,179,193,.2);border-radius:18px;padding:20px 18px;max-width:360px;width:100%;text-align:center;margin-top:6px;flex-shrink:0;}
+/* ══════════════════════════════════════════
+   PAGE 6: TIME — CASCADE DESIGN
+══════════════════════════════════════════ */
+#p6{gap:0;padding-bottom:20px;}
+.time-cascade{display:flex;flex-direction:column;align-items:center;width:100%;max-width:420px;flex-shrink:0;}
+.tc-unit{
+  width:100%;
+  background:var(--card);
+  border-radius:20px;
+  padding:10px 28px 18px;
+  text-align:center;
+  position:relative;
+  overflow:visible;
+  border:none;
+}
+/* colored top bar via box-shadow instead of ::before so no overflow clip issues */
+.tc-years{border-top:4px solid #ff4d6d;border-radius:4px 4px 20px 20px;}
+.tc-months{border-top:4px solid #ffd700;border-radius:4px 4px 20px 20px;}
+.tc-weeks{border-top:4px solid #9d4edd;border-radius:4px 4px 20px 20px;}
+.tc-days{border-top:4px solid #ffb3c1;border-radius:4px 4px 20px 20px;}
+.tc-hours{border-top:4px solid #67e8f9;border-radius:4px 4px 20px 20px;}
+.tc-secs{border-top:4px solid #6ee7b7;border-radius:4px 4px 20px 20px;}
+
+.tc-num{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(3rem,14vw,5rem);
+  font-weight:700;
+  line-height:1.1;
+  display:block;
+  margin-top:8px;
+}
+.tc-years .tc-num{color:#ff4d6d;}
+.tc-months .tc-num{color:#ffd700;}
+.tc-weeks .tc-num{color:#c084fc;}
+.tc-days .tc-num{color:#ffb3c1;}
+.tc-hours .tc-num{color:#67e8f9;}
+.tc-secs .tc-num{color:#6ee7b7;font-size:clamp(1.6rem,7vw,2.8rem);}
+
+.tc-hindi{font-family:'Dancing Script',cursive;font-size:1.2rem;color:rgba(255,240,243,.88);margin-top:4px;display:block;}
+.tc-eng{color:rgba(255,179,193,.5);font-size:.65rem;letter-spacing:2px;text-transform:uppercase;margin-top:2px;display:block;}
+.tc-arrow{
+  display:flex;flex-direction:column;align-items:center;gap:0;
+  color:rgba(255,77,109,.35);font-size:1.1rem;
+  padding:4px 0;
+  animation:tcbounce 1.8s ease-in-out infinite;
+}
+@keyframes tcbounce{0%,100%{transform:translateY(0);}50%{transform:translateY(5px);}}
+.tc-arrow span{display:block;line-height:.7;}
+
+/* countdown section */
+.countdown-wrap{background:linear-gradient(135deg,rgba(255,77,109,.12),rgba(157,78,221,.08));border:1px solid rgba(255,179,193,.2);border-radius:18px;padding:20px 18px;max-width:420px;width:100%;text-align:center;margin-top:14px;flex-shrink:0;}
 .countdown-title{font-family:'Dancing Script',cursive;font-size:1.4rem;color:var(--blush);margin-bottom:10px;}
 .cd-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
 .cd-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,179,193,.2);border-radius:12px;padding:12px 10px;min-width:62px;text-align:center;}
@@ -262,7 +197,7 @@ nav::-webkit-scrollbar{display:none;}
 .frames{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:10px;flex-shrink:0;}
 .frm{border:2px solid rgba(255,215,0,.35);border-radius:14px;padding:6px;background:rgba(255,255,255,.03);font-size:3.5rem;line-height:1;cursor:pointer;box-shadow:0 0 20px rgba(255,77,109,.15);}
 
-/* ─── PAGE 7: OUR MOMENTS (PICS) ─── */
+/* ─── PAGE 7: MOMENTS ─── */
 #p7{gap:12px;}
 .pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:600px;width:100%;flex-shrink:0;}
 .pgrid .pic-item:first-child{grid-column:1/-1;}
@@ -275,14 +210,12 @@ nav::-webkit-scrollbar{display:none;}
 .pic-placeholder p{font-size:.75rem;font-style:italic;}
 .pic-num{position:absolute;top:8px;left:8px;background:rgba(255,77,109,.7);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-family:'Playfair Display',serif;}
 .github-info{background:rgba(255,77,109,.1);border:1px dashed rgba(255,179,193,.3);border-radius:12px;padding:10px 14px;max-width:600px;width:100%;text-align:center;font-size:.78rem;color:rgba(255,179,193,.7);font-style:italic;line-height:1.6;flex-shrink:0;}
-
-/* Pic modal */
 .picmodal{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:20px;}
 .picmodal.show{opacity:1;pointer-events:all;}
 .picmodal img{max-width:100%;max-height:80vh;border-radius:16px;object-fit:contain;box-shadow:0 0 50px rgba(255,77,109,.3);}
 .picclose{position:absolute;top:20px;right:20px;font-size:2rem;color:white;cursor:pointer;background:rgba(255,77,109,.4);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;touch-action:manipulation;}
 
-/* ─── PAGE 8: OUR FIGHTS ─── */
+/* ─── PAGE 8: FIGHTS ─── */
 #p8{gap:12px;}
 .ftimeline{max-width:560px;width:100%;position:relative;flex-shrink:0;}
 .ftimeline::before{content:'';position:absolute;left:22px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--rose),var(--mauve),var(--rose));opacity:.3;}
@@ -295,47 +228,161 @@ nav::-webkit-scrollbar{display:none;}
 .fmsg{color:rgba(255,179,193,.65);font-size:.82rem;font-style:italic;line-height:1.6;margin-top:6px;}
 .fend{text-align:center;padding:16px;font-family:'Dancing Script',cursive;font-size:1.4rem;color:var(--blush);}
 
-/* ─── HEARTS BURST ─── */
+/* ══════════════════════════════════════════
+   PAGE 9: OUR DAYS (WEEKDAYS)
+══════════════════════════════════════════ */
+#p9{gap:12px;}
+.wd-intro{
+  background:linear-gradient(135deg,rgba(255,77,109,.1),rgba(157,78,221,.08));
+  border:1px solid rgba(255,179,193,.2);
+  border-radius:18px;
+  padding:16px 20px;
+  max-width:420px;
+  width:100%;
+  text-align:center;
+  flex-shrink:0;
+}
+.wd-intro-big{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,9vw,3.5rem);
+  color:var(--gold);
+  font-weight:700;
+  line-height:1;
+}
+.wd-intro-txt{
+  font-family:'Dancing Script',cursive;
+  font-size:1.1rem;
+  color:var(--blush);
+  margin-top:4px;
+}
+.weekdays-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  width:100%;
+  max-width:420px;
+  flex-shrink:0;
+}
+.wd-card{
+  background:var(--card);
+  border-radius:16px;
+  padding:12px 12px 14px;
+  text-align:center;
+  position:relative;
+  overflow:visible;
+  transition:transform .2s;
+  border:none;
+}
+.wd-card:active{transform:scale(.96);}
+.wd-sun{border-top:3px solid #f97316;border-radius:3px 3px 16px 16px;}
+.wd-mon{border-top:3px solid #9d4edd;border-radius:3px 3px 16px 16px;}
+.wd-tue{border-top:3px solid #ff4d6d;border-radius:3px 3px 16px 16px;}
+.wd-wed{border-top:3px solid #10b981;border-radius:3px 3px 16px 16px;}
+.wd-thu{border-top:3px solid #3b82f6;border-radius:3px 3px 16px 16px;}
+.wd-fri{border-top:3px solid #ffd700;border-radius:3px 3px 16px 16px;}
+.wd-sat{border-top:3px solid #ec4899;border-radius:3px 3px 16px 16px;}
+.wd-emoji{font-size:1.7rem;margin-bottom:4px;}
+.wd-dayname{font-family:'Playfair Display',serif;color:rgba(255,240,243,.8);font-size:.82rem;letter-spacing:.5px;margin-bottom:2px;}
+.wd-dayname-hi{color:rgba(255,179,193,.55);font-size:.68rem;font-style:italic;margin-bottom:6px;}
+.wd-count{
+  font-family:'Playfair Display',serif;
+  font-size:2.4rem;
+  font-weight:700;
+  line-height:1.1;
+  display:block;
+}
+.wd-sun .wd-count{color:#f97316;}
+.wd-mon .wd-count{color:#c084fc;}
+.wd-tue .wd-count{color:#ff4d6d;}
+.wd-wed .wd-count{color:#10b981;}
+.wd-thu .wd-count{color:#3b82f6;}
+.wd-fri .wd-count{color:#ffd700;}
+.wd-sat .wd-count{color:#ec4899;}
+.wd-lbl{color:rgba(255,179,193,.45);font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;margin-top:3px;}
+/* Sunday card full width */
+.wd-sunday-full{grid-column:1/-1;}
+.wd-quote{
+  max-width:420px;
+  width:100%;
+  text-align:center;
+  font-family:'Dancing Script',cursive;
+  font-size:1.1rem;
+  color:rgba(255,179,193,.6);
+  font-style:italic;
+  padding:10px;
+  flex-shrink:0;
+}
+
+/* ══════════════════════════════════════════
+   PAGE 10: FESTIVALS
+══════════════════════════════════════════ */
+#p10{gap:12px;}
+.fest-intro{
+  background:linear-gradient(135deg,rgba(255,215,0,.1),rgba(255,77,109,.06));
+  border:1px solid rgba(255,215,0,.2);
+  border-radius:18px;
+  padding:14px 20px;
+  max-width:560px;
+  width:100%;
+  text-align:center;
+  flex-shrink:0;
+}
+.fest-intro-txt{font-family:'Dancing Script',cursive;font-size:1.15rem;color:rgba(255,215,0,.8);line-height:1.6;}
+.fest-list{display:flex;flex-direction:column;gap:14px;width:100%;max-width:560px;flex-shrink:0;}
+.fest-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:18px 18px 16px;
+  position:relative;
+  overflow:visible;
+  transition:transform .25s;
+}
+.fest-card:active{transform:scale(.98);}
+.fest-top{display:flex;align-items:center;gap:14px;margin-bottom:10px;}
+.fest-emoji-wrap{
+  width:54px;height:54px;border-radius:14px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,179,193,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.9rem;flex-shrink:0;
+}
+.fest-info{flex:1;}
+.fest-name{font-family:'Playfair Display',serif;color:#fff;font-size:1rem;margin-bottom:2px;}
+.fest-name-hi{color:rgba(255,179,193,.55);font-size:.75rem;font-style:italic;}
+.fest-badge-row{display:flex;align-items:center;justify-content:space-between;margin-top:2px;}
+.fest-dots-wrap{display:flex;gap:5px;align-items:center;}
+.fest-dot{width:11px;height:11px;border-radius:50%;display:inline-block;}
+.fest-count-txt{
+  font-family:'Dancing Script',cursive;
+  font-size:1.3rem;
+  color:#ffd700;
+  font-weight:700;
+}
+.fest-msg{color:rgba(255,179,193,.65);font-size:.8rem;font-style:italic;line-height:1.6;border-top:1px solid rgba(255,179,193,.1);padding-top:8px;}
+.fest-end-note{
+  max-width:560px;width:100%;
+  text-align:center;
+  font-family:'Dancing Script',cursive;
+  font-size:1.2rem;
+  color:rgba(255,179,193,.6);
+  padding:8px;
+  flex-shrink:0;
+}
+
+/* ─── MISC ─── */
 .hburst{position:fixed;pointer-events:none;z-index:500;font-size:1.4rem;animation:hbexp .9s ease-out forwards;}
 @keyframes hbexp{0%{opacity:1;transform:translate(0,0) scale(1);}100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.2);}}
-
-/* CONFETTI */
 #cvs{position:fixed;inset:0;z-index:50;pointer-events:none;}
-
-/* song player hint */
 #songHint{position:fixed;top:10px;right:10px;z-index:90;background:rgba(255,77,109,.15);border:1px solid rgba(255,179,193,.2);border-radius:20px;padding:6px 14px;color:var(--blush);font-size:.75rem;display:none;align-items:center;gap:6px;cursor:pointer;}
 #songHint.show{display:flex;}
 #songHint .sh-dot{width:8px;height:8px;border-radius:50%;background:var(--rose);animation:sblink 1s ease-in-out infinite;}
 @keyframes sblink{0%,100%{opacity:1;}50%{opacity:.3;}}
 
-/* ─── LETTER SCROLL ARROWS — only shown on letter page ─── */
-#scrollArrows{
-  position:fixed;
-  right:10px;
-  bottom:64px; /* just above nav */
-  z-index:200;
-  display:none; /* hidden by default */
-  flex-direction:column;
-  gap:8px;
-  pointer-events:none; /* default: no interaction */
-}
-#scrollArrows.visible{
-  display:flex;
-  pointer-events:all;
-}
-.sarr{
-  width:44px;height:44px;border-radius:50%;
-  background:rgba(255,77,109,.82);
-  border:2px solid rgba(255,179,193,.45);
-  color:#fff;font-size:1.3rem;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;
-  box-shadow:0 4px 16px rgba(255,77,109,.45);
-  -webkit-tap-highlight-color:transparent;
-  user-select:none;-webkit-user-select:none;
-  touch-action:manipulation;
-  transition:transform .1s,background .1s;
-}
+/* ─── LETTER SCROLL ARROWS ─── */
+#scrollArrows{position:fixed;right:10px;bottom:64px;z-index:200;display:none;flex-direction:column;gap:8px;pointer-events:none;}
+#scrollArrows.visible{display:flex;pointer-events:all;}
+.sarr{width:44px;height:44px;border-radius:50%;background:rgba(255,77,109,.82);border:2px solid rgba(255,179,193,.45);color:#fff;font-size:1.3rem;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(255,77,109,.45);-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;touch-action:manipulation;transition:transform .1s,background .1s;}
 .sarr:active{transform:scale(.88);background:rgba(201,24,74,.95);}
 </style>
 </head>
@@ -351,18 +398,18 @@ nav::-webkit-scrollbar{display:none;}
   <div class="lk-sub">Enter the secret code</div>
   <div class="dots" id="dots"></div>
   <div class="numpad" id="np">
-    <button class="nb" ontouchstart="pressKey('1')">1</button>
-    <button class="nb" ontouchstart="pressKey('2')">2</button>
-    <button class="nb" ontouchstart="pressKey('3')">3</button>
-    <button class="nb" ontouchstart="pressKey('4')">4</button>
-    <button class="nb" ontouchstart="pressKey('5')">5</button>
-    <button class="nb" ontouchstart="pressKey('6')">6</button>
-    <button class="nb" ontouchstart="pressKey('7')">7</button>
-    <button class="nb" ontouchstart="pressKey('8')">8</button>
-    <button class="nb" ontouchstart="pressKey('9')">9</button>
-    <button class="nb" ontouchstart="pressKey('del')">⌫</button>
-    <button class="nb" ontouchstart="pressKey('0')">0</button>
-    <button class="nb" ontouchstart="pressKey('ok')" style="font-size:1.3rem;">✓</button>
+    <button class="nb" ontouchstart="pressKey('1',event)" onclick="pressKey('1',event)">1</button>
+    <button class="nb" ontouchstart="pressKey('2',event)" onclick="pressKey('2',event)">2</button>
+    <button class="nb" ontouchstart="pressKey('3',event)" onclick="pressKey('3',event)">3</button>
+    <button class="nb" ontouchstart="pressKey('4',event)" onclick="pressKey('4',event)">4</button>
+    <button class="nb" ontouchstart="pressKey('5',event)" onclick="pressKey('5',event)">5</button>
+    <button class="nb" ontouchstart="pressKey('6',event)" onclick="pressKey('6',event)">6</button>
+    <button class="nb" ontouchstart="pressKey('7',event)" onclick="pressKey('7',event)">7</button>
+    <button class="nb" ontouchstart="pressKey('8',event)" onclick="pressKey('8',event)">8</button>
+    <button class="nb" ontouchstart="pressKey('9',event)" onclick="pressKey('9',event)">9</button>
+    <button class="nb" ontouchstart="pressKey('del',event)" onclick="pressKey('del',event)">⌫</button>
+    <button class="nb" ontouchstart="pressKey('0',event)" onclick="pressKey('0',event)">0</button>
+    <button class="nb" ontouchstart="pressKey('ok',event)" onclick="pressKey('ok',event)" style="font-size:1.3rem;">✓</button>
   </div>
   <div id="errMsg">Wrong code 💔 Try again</div>
 </div>
@@ -473,25 +520,63 @@ nav::-webkit-scrollbar{display:none;}
       <div class="notes" id="notesWrap"></div>
     </div>
 
-    <!-- P6 TIME -->
+    <!-- P6 TIME — CASCADE -->
     <div class="page" id="p6">
-      <div class="ptitle">3 Years of Love</div>
-      <div class="pdiv"><span>⏳</span></div>
-      <div class="daybig" id="dayBig">---</div>
-      <div class="togsince">days together &amp; counting 💓</div>
-      <div class="cgrid">
-        <div class="ci"><div class="cn" id="cY">--</div><div class="cl">Years</div></div>
-        <div class="ci"><div class="cn" id="cM">--</div><div class="cl">Months</div></div>
-        <div class="ci"><div class="cn" id="cW">--</div><div class="cl">Weeks</div></div>
-        <div class="ci"><div class="cn" id="cD">--</div><div class="cl">Days</div></div>
-      </div>
-      <div style="text-align:center;margin:4px 0 2px;flex-shrink:0;">
-        <div style="background:rgba(255,77,109,.12);border:1px solid rgba(255,179,193,.25);border-radius:16px;padding:12px 18px;display:inline-block;min-width:220px;">
-          <div style="font-size:.62rem;letter-spacing:2px;color:rgba(255,179,193,.6);text-transform:uppercase;margin-bottom:4px;">Seconds Together ❤️</div>
-          <div id="cSec" style="font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--gold);font-weight:700;word-break:break-all;letter-spacing:1px;">--</div>
+      <div class="ptitle">Hamara Safar ⏳</div>
+      <div class="pdiv"><span>💞</span></div>
+
+      <div class="time-cascade">
+
+        <!-- YEARS -->
+        <div class="tc-unit tc-years">
+          <div class="tc-num" id="cY">--</div>
+          <div class="tc-hindi">साल साथ हैं हम 💓</div>
+          <div class="tc-eng">Years Together</div>
         </div>
-      </div>
-      <p style="color:rgba(255,179,193,.6);font-style:italic;font-size:.9rem;flex-shrink:0;">Every second with you is a treasure 💓</p>
+        <div class="tc-arrow"><span>▼</span><span>▼</span></div>
+
+        <!-- MONTHS -->
+        <div class="tc-unit tc-months">
+          <div class="tc-num" id="cM">--</div>
+          <div class="tc-hindi">महीने का प्यार 🌹</div>
+          <div class="tc-eng">Months Together</div>
+        </div>
+        <div class="tc-arrow"><span>▼</span><span>▼</span></div>
+
+        <!-- WEEKS -->
+        <div class="tc-unit tc-weeks">
+          <div class="tc-num" id="cW">--</div>
+          <div class="tc-hindi">हफ्ते साथ गुज़ारे ✨</div>
+          <div class="tc-eng">Weeks Together</div>
+        </div>
+        <div class="tc-arrow"><span>▼</span><span>▼</span></div>
+
+        <!-- DAYS -->
+        <div class="tc-unit tc-days">
+          <div class="tc-num" id="cD">--</div>
+          <div class="tc-hindi">दिन तुम्हारे साथ 💕</div>
+          <div class="tc-eng">Days Together</div>
+        </div>
+        <div class="tc-arrow"><span>▼</span><span>▼</span></div>
+
+        <!-- HOURS -->
+        <div class="tc-unit tc-hours">
+          <div class="tc-num" id="cH">--</div>
+          <div class="tc-hindi">घंटे — हर पल तुम्हारे साथ 🌙</div>
+          <div class="tc-eng">Hours Together</div>
+        </div>
+        <div class="tc-arrow"><span>▼</span><span>▼</span></div>
+
+        <!-- SECONDS — live -->
+        <div class="tc-unit tc-secs">
+          <div class="tc-num" id="cSec" style="font-size:clamp(1.4rem,6vw,2.4rem);">--</div>
+          <div class="tc-hindi">सेकंड... और गिन रहा हूँ 💖</div>
+          <div class="tc-eng">Seconds Together & Counting Live</div>
+        </div>
+
+      </div><!-- /time-cascade -->
+
+      <!-- Countdown -->
       <div class="countdown-wrap">
         <div class="countdown-title">💌 Next Special Day</div>
         <p style="color:rgba(255,179,193,.5);font-size:.76rem;font-style:italic;margin-bottom:10px;">April 17, 2026 — Counting Down...</p>
@@ -509,14 +594,11 @@ nav::-webkit-scrollbar{display:none;}
       </div>
     </div>
 
-    <!-- P7 OUR MOMENTS (PICS from GitHub) -->
+    <!-- P7 OUR MOMENTS -->
     <div class="page" id="p7">
       <div class="ptitle">Our Moments 📸</div>
       <div class="pdiv"><span>🌸</span></div>
-      <div class="github-info">
-        📁 Photos load from your GitHub repo<br>
-        Upload: <strong>1.png 2.png 3.png 4.png 5.png</strong> to your repo
-      </div>
+      <div class="github-info">📁 Photos load from your GitHub repo<br>Upload: <strong>1.png 2.png 3.png 4.png 5.png</strong></div>
       <div class="pgrid" id="picGrid">
         <div class="pic-item" id="pic0" ontouchstart="openPic(event,0)"><span class="pic-num">1</span><div class="pic-placeholder"><span>📷</span><p>Loading 1.png...</p></div></div>
         <div class="pic-item" id="pic1" ontouchstart="openPic(event,1)"><span class="pic-num">2</span><div class="pic-placeholder"><span>📷</span><p>Loading 2.png...</p></div></div>
@@ -534,6 +616,96 @@ nav::-webkit-scrollbar{display:none;}
       <div class="ftimeline" id="fightTimeline"></div>
     </div>
 
+    <!-- P9 OUR DAYS — WEEKDAY BREAKDOWN -->
+    <div class="page" id="p9">
+      <div class="ptitle">Hamare Din 📅</div>
+      <div class="pdiv"><span>🗓️</span></div>
+
+      <!-- Total days intro -->
+      <div class="wd-intro">
+        <div class="wd-intro-big" id="wdTotal">--</div>
+        <div class="wd-intro-txt">din saath bitaye hain humne 💓</div>
+        <div style="color:rgba(255,179,193,.45);font-size:.7rem;letter-spacing:1px;margin-top:4px;font-style:italic;">17 April 2023 se aaj tak</div>
+      </div>
+
+      <!-- Weekday grid -->
+      <div class="weekdays-grid">
+        <!-- Sunday — full width special -->
+        <div class="wd-card wd-sun wd-sunday-full" ontouchstart="burst(event)">
+          <div class="wd-emoji">☀️</div>
+          <div class="wd-dayname">Sunday</div>
+          <div class="wd-dayname-hi">रविवार — छुट्टी का दिन 🥰</div>
+          <div class="wd-count" id="wdSun">--</div>
+          <div class="wd-lbl">Sundays Together</div>
+        </div>
+        <div class="wd-card wd-mon" ontouchstart="burst(event)">
+          <div class="wd-emoji">🌙</div>
+          <div class="wd-dayname">Monday</div>
+          <div class="wd-dayname-hi">सोमवार</div>
+          <div class="wd-count" id="wdMon">--</div>
+          <div class="wd-lbl">Mondays</div>
+        </div>
+        <div class="wd-card wd-tue" ontouchstart="burst(event)">
+          <div class="wd-emoji">💓</div>
+          <div class="wd-dayname">Tuesday</div>
+          <div class="wd-dayname-hi">मंगलवार</div>
+          <div class="wd-count" id="wdTue">--</div>
+          <div class="wd-lbl">Tuesdays</div>
+        </div>
+        <div class="wd-card wd-wed" ontouchstart="burst(event)">
+          <div class="wd-emoji">🌿</div>
+          <div class="wd-dayname">Wednesday</div>
+          <div class="wd-dayname-hi">बुधवार</div>
+          <div class="wd-count" id="wdWed">--</div>
+          <div class="wd-lbl">Wednesdays</div>
+        </div>
+        <div class="wd-card wd-thu" ontouchstart="burst(event)">
+          <div class="wd-emoji">💙</div>
+          <div class="wd-dayname">Thursday</div>
+          <div class="wd-dayname-hi">गुरुवार</div>
+          <div class="wd-count" id="wdThu">--</div>
+          <div class="wd-lbl">Thursdays</div>
+        </div>
+        <div class="wd-card wd-fri" ontouchstart="burst(event)">
+          <div class="wd-emoji">✨</div>
+          <div class="wd-dayname">Friday</div>
+          <div class="wd-dayname-hi">शुक्रवार</div>
+          <div class="wd-count" id="wdFri">--</div>
+          <div class="wd-lbl">Fridays</div>
+        </div>
+        <div class="wd-card wd-sat" ontouchstart="burst(event)">
+          <div class="wd-emoji">🌸</div>
+          <div class="wd-dayname">Saturday</div>
+          <div class="wd-dayname-hi">शनिवार</div>
+          <div class="wd-count" id="wdSat">--</div>
+          <div class="wd-lbl">Saturdays</div>
+        </div>
+      </div>
+
+      <div class="wd-quote">
+        "Chahe Monday ho ya Sunday —<br>har din tumhara saath ho, kafi hai 💓"
+      </div>
+    </div>
+
+    <!-- P10 FESTIVALS TOGETHER -->
+    <div class="page" id="p10">
+      <div class="ptitle">Tyohaar Saath 🎊</div>
+      <div class="pdiv"><span>🪔</span></div>
+
+      <div class="fest-intro">
+        <div class="fest-intro-txt">
+          Ye tyohaar humne saath manaye hain —<br>
+          aur har ek mein ek naya rang tha tumhara 💝
+        </div>
+      </div>
+
+      <div class="fest-list" id="festList"></div>
+
+      <div class="fest-end-note">
+        "Har tyohaar mein sabse khaas tum ho 🪔💓"
+      </div>
+    </div>
+
   </div><!-- /pages -->
 
   <!-- BOTTOM NAV -->
@@ -546,6 +718,8 @@ nav::-webkit-scrollbar{display:none;}
     <button class="nb2" ontouchstart="goPage(6)"><span class="ni">⏳</span>Time</button>
     <button class="nb2" ontouchstart="goPage(7)"><span class="ni">📸</span>Moments</button>
     <button class="nb2" ontouchstart="goPage(8)"><span class="ni">🕊️</span>Fights</button>
+    <button class="nb2" ontouchstart="goPage(9)"><span class="ni">📅</span>Hamare Din</button>
+    <button class="nb2" ontouchstart="goPage(10)"><span class="ni">🪔</span>Tyohaar</button>
   </nav>
 </div>
 
@@ -573,7 +747,7 @@ nav::-webkit-scrollbar{display:none;}
   <img id="picModalImg" src="" alt="">
 </div>
 
-<!-- Letter Scroll Arrows — ONLY visible on Letter page -->
+<!-- Letter Scroll Arrows -->
 <div id="scrollArrows">
   <div class="sarr" id="saUp">▲</div>
   <div class="sarr" id="saDn">▼</div>
@@ -581,337 +755,276 @@ nav::-webkit-scrollbar{display:none;}
 
 <script>
 // ══════════════════════════════════════════════
-// ⚙️  CONFIG — CHANGE THIS TO YOUR GITHUB REPO
+// ⚙️ CONFIG
 // ══════════════════════════════════════════════
 const GITHUB_RAW = 'https://raw.githubusercontent.com/bubudubu-u/test-2/main/';
 const SONG_FILE = 'song.mp3';
+const START_DATE = new Date('2023-04-17T00:00:00');
 
 // ══════════════════════════════════════════════
-// 🔒 LOCK SCREEN
+// 🔒 LOCK
 // ══════════════════════════════════════════════
 const CODE = '271713';
-let entered = '';
-let lastKey = 0;
-
+let entered = '', lastKey = 0;
 const dotsEl = document.getElementById('dots');
-for(let i = 0; i < 6; i++){
-  const d = document.createElement('div');
-  d.className = 'dot'; d.id = 'd' + i;
-  dotsEl.appendChild(d);
-}
-
-const lkf = document.getElementById('lkf');
-['💕','💗','💓','💖','❤️','🌹','✨'].forEach((h,i) => {
-  const el = document.createElement('div'); el.className = 'lk-h'; el.textContent = h;
-  el.style.cssText = `left:${10+i*13}%;top:${5+i*12}%;font-size:${.8+Math.random()*.8}rem;animation-delay:${i*.9}s;animation-duration:${5+i}s;`;
+for(let i=0;i<6;i++){const d=document.createElement('div');d.className='dot';d.id='d'+i;dotsEl.appendChild(d);}
+const lkf=document.getElementById('lkf');
+['💕','💗','💓','💖','❤️','🌹','✨'].forEach((h,i)=>{
+  const el=document.createElement('div');el.className='lk-h';el.textContent=h;
+  el.style.cssText=`left:${10+i*13}%;top:${5+i*12}%;font-size:${.8+Math.random()*.8}rem;animation-delay:${i*.9}s;animation-duration:${5+i}s;`;
   lkf.appendChild(el);
 });
-
-function updDots(){
-  for(let i = 0; i < 6; i++)
-    document.getElementById('d'+i).classList.toggle('on', i < entered.length);
+function updDots(){for(let i=0;i<6;i++)document.getElementById('d'+i).classList.toggle('on',i<entered.length);}
+function pressKey(n,e){
+  if(e){e.preventDefault();e.stopPropagation();}
+  const now=Date.now();if(now-lastKey<400)return;lastKey=now;
+  if(n==='del'){entered=entered.slice(0,-1);updDots();}
+  else if(n==='ok'){checkCode();}
+  else{if(entered.length<6){entered+=n;updDots();if(entered.length===6)setTimeout(checkCode,250);}}
 }
-
-function pressKey(n){
-  const now = Date.now();
-  if(now - lastKey < 300) return;
-  lastKey = now;
-  if(n === 'del'){ entered = entered.slice(0,-1); updDots(); }
-  else if(n === 'ok'){ checkCode(); }
-  else {
-    if(entered.length < 6){
-      entered += n; updDots();
-      if(entered.length === 6) setTimeout(checkCode, 250);
-    }
-  }
-}
-
 function checkCode(){
-  if(entered === CODE){ unlock(); }
-  else {
-    const err = document.getElementById('errMsg');
-    err.classList.add('show');
+  if(entered===CODE){unlock();}
+  else{
+    const err=document.getElementById('errMsg');err.classList.add('show');
     document.getElementById('np').classList.add('shake');
-    setTimeout(() => {
-      document.getElementById('np').classList.remove('shake');
-      err.classList.remove('show');
-      entered = ''; updDots();
-    }, 900);
+    setTimeout(()=>{document.getElementById('np').classList.remove('shake');err.classList.remove('show');entered='';updDots();},900);
   }
 }
 
 // ══════════════════════════════════════════════
 // 🎵 SONG
 // ══════════════════════════════════════════════
-const audio = document.getElementById('bgSong');
-let songLoaded = false;
-
-function loadSongFromGitHub(){
-  audio.src = GITHUB_RAW + SONG_FILE;
-  audio.volume = 0.45;
-  audio.oncanplaythrough = () => { songLoaded = true; };
-  audio.load();
-}
+const audio=document.getElementById('bgSong');
+function loadSongFromGitHub(){audio.src=GITHUB_RAW+SONG_FILE;audio.volume=0.45;audio.load();}
 loadSongFromGitHub();
-
-function playSong(){
-  audio.play().then(() => {
-    songLoaded = true;
-    document.getElementById('songHint').classList.add('show');
-  }).catch(() => {});
-}
+function playSong(){audio.play().then(()=>{document.getElementById('songHint').classList.add('show');}).catch(()=>{});}
 function toggleSong(){
-  if(audio.paused){
-    audio.play();
-    document.getElementById('songHintTxt').textContent = '♪ Playing';
-  } else {
-    audio.pause();
-    document.getElementById('songHintTxt').textContent = '♪ Paused';
-  }
+  if(audio.paused){audio.play();document.getElementById('songHintTxt').textContent='♪ Playing';}
+  else{audio.pause();document.getElementById('songHintTxt').textContent='♪ Paused';}
 }
 
 // ══════════════════════════════════════════════
 // 🔓 UNLOCK
 // ══════════════════════════════════════════════
+let appInited=false;
 function unlock(){
-  const fl = document.getElementById('unlockFlash');
-  fl.classList.add('show');
-  confettiBurst();
-  setTimeout(() => {
-    document.getElementById('lockScreen').style.display = 'none';
-    fl.style.transition = 'opacity .7s';
-    fl.style.opacity = '0';
-    document.getElementById('app').style.display = 'block';
-    startBgH(); buildNotes(); calcTime(); buildFights();
-    loadMomentPics();
-    playSong();
-    startCountdown();
-    // Show arrows only if starting on letter page (we start on p1, so hide)
+  const fl=document.getElementById('unlockFlash');
+  fl.classList.add('show');confettiBurst();
+  setTimeout(()=>{
+    document.getElementById('lockScreen').style.display='none';
+    fl.style.transition='opacity .7s';fl.style.opacity='0';
+    document.getElementById('app').style.display='block';
+    if(!appInited){
+      appInited=true;
+      startBgH();buildNotes();buildFights();
+      loadMomentPics();buildFestivals();calcWeekdays();
+    }
+    playSong();startCountdown();
     updateArrows(1);
-    setTimeout(() => { fl.style.display = 'none'; }, 700);
-  }, 1600);
+    setTimeout(()=>{fl.style.display='none';},700);
+  },1600);
 }
 
 // ══════════════════════════════════════════════
-// 📄 PAGE NAVIGATION — clean, no override tricks
+// 📄 NAVIGATION
 // ══════════════════════════════════════════════
-let lastNav = 0;
-let currentPage = 1;
-
+let lastNav=0, currentPage=1;
 function goPage(n){
-  const now = Date.now();
-  if(now - lastNav < 280) return;
-  lastNav = now;
-  currentPage = n;
-
-  document.querySelectorAll('.page').forEach((p,i) =>
-    p.classList.toggle('active', i+1 === n)
-  );
-  document.querySelectorAll('.nb2').forEach((b,i) =>
-    b.classList.toggle('active', i+1 === n)
-  );
-
-  // Reset scroll to top on page switch
-  const pg = document.getElementById('p'+n);
-  if(pg) pg.scrollTop = 0;
-
-  // Show/hide letter arrows
+  const now=Date.now();if(now-lastNav<280)return;lastNav=now;currentPage=n;
+  document.querySelectorAll('.page').forEach((p,i)=>p.classList.toggle('active',i+1===n));
+  document.querySelectorAll('.nb2').forEach((b,i)=>b.classList.toggle('active',i+1===n));
+  const pg=document.getElementById('p'+n);if(pg)pg.scrollTop=0;
   updateArrows(n);
 }
 
 // ══════════════════════════════════════════════
-// 📜 LETTER SCROLL ARROWS — direct, no smooth interval
+// 📜 LETTER ARROWS
 // ══════════════════════════════════════════════
-const scrollArrows = document.getElementById('scrollArrows');
-const saUp = document.getElementById('saUp');
-const saDn = document.getElementById('saDn');
-let scrollTimer = null;
-let isScrolling = false;
-
-function updateArrows(pageNum){
-  if(pageNum === 2){
-    scrollArrows.classList.add('visible');
-  } else {
-    scrollArrows.classList.remove('visible');
-  }
-}
-
-function doScroll(dir){
-  const page = document.getElementById('p2');
-  if(!page) return;
-  // Direct scroll — no smooth, no jank
-  page.scrollTop += dir * 60;
-}
-
-function startArrowScroll(dir){
-  if(isScrolling) return;
-  isScrolling = true;
-  doScroll(dir); // immediate first scroll
-  scrollTimer = setInterval(() => doScroll(dir), 80);
-}
-
-function stopArrowScroll(){
-  isScrolling = false;
-  if(scrollTimer){ clearInterval(scrollTimer); scrollTimer = null; }
-}
-
-// Touch events for arrows
-saUp.addEventListener('touchstart', e => {
-  e.stopPropagation();
-  startArrowScroll(-1);
-}, {passive: true});
-saUp.addEventListener('touchend', stopArrowScroll);
-saUp.addEventListener('touchcancel', stopArrowScroll);
-
-saDn.addEventListener('touchstart', e => {
-  e.stopPropagation();
-  startArrowScroll(1);
-}, {passive: true});
-saDn.addEventListener('touchend', stopArrowScroll);
-saDn.addEventListener('touchcancel', stopArrowScroll);
-
-// Mouse fallback
-saUp.addEventListener('mousedown', () => startArrowScroll(-1));
-saUp.addEventListener('mouseup', stopArrowScroll);
-saUp.addEventListener('mouseleave', stopArrowScroll);
-saDn.addEventListener('mousedown', () => startArrowScroll(1));
-saDn.addEventListener('mouseup', stopArrowScroll);
-saDn.addEventListener('mouseleave', stopArrowScroll);
+const scrollArrows=document.getElementById('scrollArrows');
+const saUp=document.getElementById('saUp'),saDn=document.getElementById('saDn');
+let scrollTimer=null,isScrolling=false;
+function updateArrows(n){n===2?scrollArrows.classList.add('visible'):scrollArrows.classList.remove('visible');}
+function doScroll(dir){const p=document.getElementById('p2');if(p)p.scrollTop+=dir*60;}
+function startArrowScroll(dir){if(isScrolling)return;isScrolling=true;doScroll(dir);scrollTimer=setInterval(()=>doScroll(dir),80);}
+function stopArrowScroll(){isScrolling=false;if(scrollTimer){clearInterval(scrollTimer);scrollTimer=null;}}
+saUp.addEventListener('touchstart',e=>{e.stopPropagation();startArrowScroll(-1);},{passive:true});
+saUp.addEventListener('touchend',stopArrowScroll);saUp.addEventListener('touchcancel',stopArrowScroll);
+saDn.addEventListener('touchstart',e=>{e.stopPropagation();startArrowScroll(1);},{passive:true});
+saDn.addEventListener('touchend',stopArrowScroll);saDn.addEventListener('touchcancel',stopArrowScroll);
+saUp.addEventListener('mousedown',()=>startArrowScroll(-1));saUp.addEventListener('mouseup',stopArrowScroll);saUp.addEventListener('mouseleave',stopArrowScroll);
+saDn.addEventListener('mousedown',()=>startArrowScroll(1));saDn.addEventListener('mouseup',stopArrowScroll);saDn.addEventListener('mouseleave',stopArrowScroll);
 
 // ══════════════════════════════════════════════
-// 📅 TIME + COUNTDOWN TO APRIL 17 2026
+// 📅 TIME — CASCADE (live)
 // ══════════════════════════════════════════════
 function calcTime(){
-  const start = new Date('2023-04-17T00:00:00');
-  const now = new Date();
-  const diffMs = now - start;
-  const totalSec = Math.floor(diffMs/1000);
-  const days = Math.floor(diffMs/(1000*60*60*24));
-  let months = (now.getFullYear()-start.getFullYear())*12+(now.getMonth()-start.getMonth());
-  if(now.getDate() < start.getDate()) months--;
-  const years = Math.floor(months/12);
-  document.getElementById('dayBig').textContent = days.toLocaleString();
-  document.getElementById('cY').textContent = years;
-  document.getElementById('cW').textContent = Math.floor(days/7).toLocaleString();
-  document.getElementById('cD').textContent = days.toLocaleString();
-  document.getElementById('cM').textContent = months;
-  document.getElementById('cSec').textContent = totalSec.toLocaleString();
+  const now=new Date();
+  const diffMs=now-START_DATE;
+  const totalSec=Math.floor(diffMs/1000);
+  const totalHrs=Math.floor(diffMs/(1000*60*60));
+  const days=Math.floor(diffMs/(1000*60*60*24));
+  const weeks=Math.floor(days/7);
+  let months=(now.getFullYear()-START_DATE.getFullYear())*12+(now.getMonth()-START_DATE.getMonth());
+  if(now.getDate()<START_DATE.getDate())months--;
+  const years=Math.floor(months/12);
+
+  document.getElementById('cY').textContent=years;
+  document.getElementById('cM').textContent=months;
+  document.getElementById('cW').textContent=weeks.toLocaleString();
+  document.getElementById('cD').textContent=days.toLocaleString();
+  document.getElementById('cH').textContent=totalHrs.toLocaleString();
+  document.getElementById('cSec').textContent=totalSec.toLocaleString();
 }
-setInterval(calcTime, 1000);
+calcTime();
+setInterval(calcTime,1000);
 
 function startCountdown(){
-  const target = new Date('2026-04-17T00:00:00');
+  const target=new Date('2026-04-17T00:00:00');
   function tick(){
-    const now = new Date();
-    const diff = target - now;
-    if(diff <= 0){
-      ['cdD','cdH','cdM','cdS'].forEach(id => document.getElementById(id).textContent = '🎉');
-      return;
-    }
-    const d = Math.floor(diff/(1000*60*60*24));
-    const h = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-    const m = Math.floor((diff%(1000*60*60))/(1000*60));
-    const s = Math.floor((diff%(1000*60))/1000);
-    document.getElementById('cdD').textContent = String(d).padStart(2,'0');
-    document.getElementById('cdH').textContent = String(h).padStart(2,'0');
-    document.getElementById('cdM').textContent = String(m).padStart(2,'0');
-    document.getElementById('cdS').textContent = String(s).padStart(2,'0');
+    const now=new Date();const diff=target-now;
+    if(diff<=0){['cdD','cdH','cdM','cdS'].forEach(id=>document.getElementById(id).textContent='🎉');return;}
+    const d=Math.floor(diff/(1000*60*60*24));
+    const h=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+    const m=Math.floor((diff%(1000*60*60))/(1000*60));
+    const s=Math.floor((diff%(1000*60))/1000);
+    document.getElementById('cdD').textContent=String(d).padStart(2,'0');
+    document.getElementById('cdH').textContent=String(h).padStart(2,'0');
+    document.getElementById('cdM').textContent=String(m).padStart(2,'0');
+    document.getElementById('cdS').textContent=String(s).padStart(2,'0');
   }
-  tick();
-  setInterval(tick, 1000);
+  tick();setInterval(tick,1000);
 }
 
 // ══════════════════════════════════════════════
-// 📸 MOMENTS — load 1.png to 5.png from GitHub
+// 📅 WEEKDAY BREAKDOWN — P9
 // ══════════════════════════════════════════════
-const picSrcs = [null,null,null,null,null];
+function calcWeekdays(){
+  const now=new Date();
+  const counts=[0,0,0,0,0,0,0]; // Sun=0 ... Sat=6
+  let d=new Date(START_DATE);
+  while(d<=now){counts[d.getDay()]++;d.setDate(d.getDate()+1);}
+  const total=counts.reduce((a,b)=>a+b,0);
 
+  document.getElementById('wdTotal').textContent=total.toLocaleString();
+  document.getElementById('wdSun').textContent=counts[0];
+  document.getElementById('wdMon').textContent=counts[1];
+  document.getElementById('wdTue').textContent=counts[2];
+  document.getElementById('wdWed').textContent=counts[3];
+  document.getElementById('wdThu').textContent=counts[4];
+  document.getElementById('wdFri').textContent=counts[5];
+  document.getElementById('wdSat').textContent=counts[6];
+}
+
+// ══════════════════════════════════════════════
+// 🪔 FESTIVALS DATA — P10
+// ══════════════════════════════════════════════
+/*
+  ⬇️ AAPKO SIRF YAHAN COUNT CHANGE KARNA HAI
+  count = kitni baar saath manaya
+*/
+const festData = [
+  {e:'🎂',name:'Birthday',nameHi:'जन्मदिन',count:3,color:'#ff4d6d',msg:'Teri muskaan dekh ke laga ki duniya ki sabse sundar cheez hu main — kyunki tum meri ho 💝'},
+  {e:'🪔',name:'Diwali',nameHi:'दीपावली',count:3,color:'#ffd700',msg:'Hazaron diye jale the us raat — par sabse roshan tum thi mere liye 🪔'},
+  {e:'🐅',name:'Durga Puja',nameHi:'दुर्गा पूजा',count:3,color:'#f97316',msg:'Maa Durga ki shakti jaisi ho tum — teen baar yeh khushiyan saath manai hain humne 🙏'},
+  {e:'🌅',name:'Chhath Puja',nameHi:'छठ पूजा',count:3,color:'#fb923c',msg:'Suraj ko argh diya humne — aur tum mere jeevan ka ujala ho ☀️'},
+  {e:'🎨',name:'Holi',nameHi:'होली',count:3,color:'#ec4899',msg:'Teen baar rang ude, teen baar hansna hua — aur tum har rang mein khoobsoorat lagi 🌈'},
+  {e:'🌾',name:'Navratri',nameHi:'नवरात्रि',count:5,color:'#c084fc',msg:'Paanch baar garba ke dhol ke saath tumhara pyaar — dil ki taal mein baj utha 💃'},
+  {e:'🌊',name:'Makar Sankranti',nameHi:'मकर संक्रान्ति',count:3,color:'#38bdf8',msg:'Til gur khao, aur hum saath rahe — yahi hai sabse badi meethas 🪁'},
+  {e:'🧵',name:'Raksha Bandhan',nameHi:'रक्षाबंधन',count:3,color:'#34d399',msg:'Yeh bandhan toh hai hi khaas — par tumhara saath sabse khaas hai 🤍'},
+  {e:'🌙',name:'Karwa Chauth',nameHi:'करवाचौथ',count:3,color:'#a78bfa',msg:'Chaand dekha tha us raat — aur tumhari aankhon mein poora chaand samaya tha 🌕'},
+  {e:'🐘',name:'Ganesh Chaturthi',nameHi:'गणेश चतुर्थी',count:3,color:'#fbbf24',msg:'Ganpati Bappa Morya! Teen baar humne ye khushi saath manai — dil bhar aaya 🙏'},
+];
+
+let festBuilt=false;
+function buildFestivals(){
+  if(festBuilt)return;festBuilt=true;
+  const list=document.getElementById('festList');
+  festData.forEach(f=>{
+    const card=document.createElement('div');
+    card.className='fest-card';
+    card.style.borderTop=`3px solid ${f.color}`;
+    card.style.borderRadius='3px 3px 20px 20px';
+
+    let dotsHtml='<div class="fest-dots-wrap">';
+    for(let i=0;i<f.count;i++)dotsHtml+=`<span class="fest-dot" style="background:${f.color};opacity:.85;box-shadow:0 0 6px ${f.color}66;"></span>`;
+    dotsHtml+='</div>';
+
+    const timesText=f.count===1?'1 Baar Saath ✨':`${f.count} Baar Saath 💓`;
+
+    card.innerHTML=`
+      <div class="fest-top">
+        <div class="fest-emoji-wrap" style="border-color:${f.color}33;">${f.e}</div>
+        <div class="fest-info">
+          <div class="fest-name">${f.name}</div>
+          <div class="fest-name-hi">${f.nameHi}</div>
+          <div class="fest-badge-row">
+            ${dotsHtml}
+            <div class="fest-count-txt" style="color:${f.color};">${timesText}</div>
+          </div>
+        </div>
+      </div>
+      <div class="fest-msg">${f.msg}</div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+// ══════════════════════════════════════════════
+// 📸 MOMENTS
+// ══════════════════════════════════════════════
+const picSrcs=[null,null,null,null,null];
 function loadMomentPics(){
-  for(let i = 0; i < 5; i++){
-    const url = GITHUB_RAW + (i+1) + '.png';
-    const img = new Image();
-    const idx = i;
-    img.onload = () => {
-      picSrcs[idx] = url;
-      const slot = document.getElementById('pic'+idx);
-      slot.innerHTML = `<span class="pic-num">${idx+1}</span><img src="${url}" alt="Moment ${idx+1}">`;
-    };
-    img.onerror = () => {
-      const slot = document.getElementById('pic'+idx);
-      slot.innerHTML = `<span class="pic-num">${idx+1}</span><div class="pic-placeholder"><span>📷</span><p>${idx+1}.png not found</p></div>`;
-    };
-    img.src = url;
+  for(let i=0;i<5;i++){
+    const url=GITHUB_RAW+(i+1)+'.png';
+    const img=new Image();const idx=i;
+    img.onload=()=>{picSrcs[idx]=url;const s=document.getElementById('pic'+idx);s.innerHTML=`<span class="pic-num">${idx+1}</span><img src="${url}" alt="Moment ${idx+1}">`;};
+    img.onerror=()=>{const s=document.getElementById('pic'+idx);s.innerHTML=`<span class="pic-num">${idx+1}</span><div class="pic-placeholder"><span>📷</span><p>${idx+1}.png not found</p></div>`;};
+    img.src=url;
   }
 }
-
-function openPic(e, idx){
-  e.stopPropagation();
-  if(!picSrcs[idx]) return;
-  document.getElementById('picModalImg').src = picSrcs[idx];
-  document.getElementById('picModal').classList.add('show');
-}
-function closePicModal(){ document.getElementById('picModal').classList.remove('show'); }
+function openPic(e,idx){e.stopPropagation();if(!picSrcs[idx])return;document.getElementById('picModalImg').src=picSrcs[idx];document.getElementById('picModal').classList.add('show');}
+function closePicModal(){document.getElementById('picModal').classList.remove('show');}
 
 // ══════════════════════════════════════════════
-// 💞 MEMORIES — open pic from GitHub by name
+// 💞 MEMORIES
 // ══════════════════════════════════════════════
-function openMemory(e, filename, title, caption){
+function openMemory(e,filename,title,caption){
   e.stopPropagation();
-  const modal = document.getElementById('memModal');
-  const img = document.getElementById('memModalImg');
-  const loading = document.getElementById('memLoading');
-  const captionEl = document.getElementById('memCaption');
-
-  img.style.display = 'none';
-  loading.style.display = 'block';
-  loading.textContent = 'Loading... 💓';
-  captionEl.textContent = '';
-  modal.classList.add('show');
-
-  const url = GITHUB_RAW + filename;
-  img.onload = () => {
-    loading.style.display = 'none';
-    img.style.display = 'block';
-    captionEl.innerHTML = `<strong style="color:var(--gold);font-style:normal;">${title}</strong><br>${caption}`;
-  };
-  img.onerror = () => {
-    loading.textContent = '💔 Photo not found on GitHub yet';
-    captionEl.innerHTML = `<strong style="color:var(--gold);font-style:normal;">${title}</strong><br>${caption}`;
-    captionEl.style.marginTop = '20px';
-  };
-  img.src = url;
+  const modal=document.getElementById('memModal'),img=document.getElementById('memModalImg'),loading=document.getElementById('memLoading'),captionEl=document.getElementById('memCaption');
+  img.style.display='none';loading.style.display='block';loading.textContent='Loading... 💓';captionEl.textContent='';modal.classList.add('show');
+  const url=GITHUB_RAW+filename;
+  img.onload=()=>{loading.style.display='none';img.style.display='block';captionEl.innerHTML=`<strong style="color:var(--gold);font-style:normal;">${title}</strong><br>${caption}`;};
+  img.onerror=()=>{loading.textContent='💔 Photo not found';captionEl.innerHTML=`<strong style="color:var(--gold);font-style:normal;">${title}</strong><br>${caption}`;captionEl.style.marginTop='20px';};
+  img.src=url;
 }
 function closeMemModal(){
   document.getElementById('memModal').classList.remove('show');
-  document.getElementById('memLoading').textContent = 'Loading... 💓';
-  document.getElementById('memLoading').style.display = 'block';
-  document.getElementById('memModalImg').style.display = 'none';
-  document.getElementById('memModalImg').src = '';
+  document.getElementById('memLoading').textContent='Loading... 💓';document.getElementById('memLoading').style.display='block';
+  document.getElementById('memModalImg').style.display='none';document.getElementById('memModalImg').src='';
 }
-function stopProp(e){ e.stopPropagation(); }
+function stopProp(e){e.stopPropagation();}
 
 // ══════════════════════════════════════════════
 // 💥 BURST
 // ══════════════════════════════════════════════
 function burst(e){
   e.stopPropagation();
-  const em = ['💕','💗','💓','💖','❤️','💝'];
-  const cx = e.touches ? e.touches[0].clientX : e.clientX;
-  const cy = e.touches ? e.touches[0].clientY : e.clientY;
-  for(let i = 0; i < 10; i++){
-    const el = document.createElement('div'); el.className = 'hburst';
-    const a = (Math.PI*2*i)/10; const d = 50+Math.random()*70;
-    el.style.cssText = `left:${cx}px;top:${cy}px;--tx:${Math.cos(a)*d}px;--ty:${Math.sin(a)*d-40}px;animation-delay:${Math.random()*.15}s;`;
-    el.textContent = em[Math.floor(Math.random()*em.length)];
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), 1000);
+  const em=['💕','💗','💓','💖','❤️','💝'];
+  const cx=e.touches?e.touches[0].clientX:e.clientX;
+  const cy=e.touches?e.touches[0].clientY:e.clientY;
+  for(let i=0;i<10;i++){
+    const el=document.createElement('div');el.className='hburst';
+    const a=(Math.PI*2*i)/10;const d=50+Math.random()*70;
+    el.style.cssText=`left:${cx}px;top:${cy}px;--tx:${Math.cos(a)*d}px;--ty:${Math.sin(a)*d-40}px;animation-delay:${Math.random()*.15}s;`;
+    el.textContent=em[Math.floor(Math.random()*em.length)];
+    document.body.appendChild(el);setTimeout(()=>el.remove(),1000);
   }
 }
 
 // ══════════════════════════════════════════════
 // 🎁 GIFTS
 // ══════════════════════════════════════════════
-const gdata = [
+const gdata=[
   {e:'💝',t:'My Heart',m:'My heart has always been yours — from the very first moment. It beats your name. It belongs to you completely, now and always.'},
   {e:'🌹',t:'A Rose For You',m:'If I could give you all the roses in the world, it still wouldn\'t match how beautiful you make every moment feel.'},
   {e:'⭐',t:'Your Own Star',m:'I\'ve named a star after you. Look up at the night sky — somewhere up there, a star is shining just for you.'},
@@ -919,27 +1032,19 @@ const gdata = [
   {e:'💍',t:'A Promise',m:'I promise to love you on your best days and hold you on your worst. To laugh, grow, and choose you every single day.'},
   {e:'🌙',t:'Forever With You',m:'Not just today — forever. Every lifetime, every version of me, would find you and fall in love with you all over again.'},
 ];
-
-let lastGift = 0;
-function openGift(e, el, idx){
-  e.stopPropagation();
-  const now = Date.now(); if(now-lastGift < 400) return; lastGift = now;
-  if(el.classList.contains('opened')) return;
-  el.classList.add('opened');
-  const d = gdata[idx];
-  document.getElementById('gme').textContent = d.e;
-  document.getElementById('gmt').textContent = d.t;
-  document.getElementById('gmm').textContent = d.m;
-  document.getElementById('gModal').classList.add('show');
-  confettiBurst();
-  burst({clientX:window.innerWidth/2, clientY:window.innerHeight/2});
+let lastGift=0;
+function openGift(e,el,idx){
+  e.stopPropagation();const now=Date.now();if(now-lastGift<400)return;lastGift=now;
+  if(el.classList.contains('opened'))return;el.classList.add('opened');
+  const d=gdata[idx];document.getElementById('gme').textContent=d.e;document.getElementById('gmt').textContent=d.t;document.getElementById('gmm').textContent=d.m;
+  document.getElementById('gModal').classList.add('show');confettiBurst();burst({clientX:window.innerWidth/2,clientY:window.innerHeight/2});
 }
-function closeGModal(){ document.getElementById('gModal').classList.remove('show'); }
+function closeGModal(){document.getElementById('gModal').classList.remove('show');}
 
 // ══════════════════════════════════════════════
 // 📝 NOTES
 // ══════════════════════════════════════════════
-const reasons = [
+const reasons=[
   'The way your eyes light up when you talk about what you love.',
   'How you make every ordinary day feel extraordinary just by being in it.',
   'Your laugh — it\'s the most beautiful sound I\'ve ever heard.',
@@ -951,21 +1056,21 @@ const reasons = [
   'Your kindness — the way you treat everyone around you with such warmth.',
   'Simply because you are you — and you are everything I ever dreamed of.',
 ];
+let notesBuilt=false;
 function buildNotes(){
-  const w = document.getElementById('notesWrap');
-  reasons.forEach((r,i) => {
-    const el = document.createElement('div'); el.className = 'note';
-    el.style.animationDelay = i*.08+'s';
-    el.innerHTML = `<div class="nnum">${i+1}</div><div class="ntxt">${r}</div>`;
-    el.addEventListener('touchstart', burst);
-    w.appendChild(el);
+  if(notesBuilt)return;notesBuilt=true;
+  const w=document.getElementById('notesWrap');
+  reasons.forEach((r,i)=>{
+    const el=document.createElement('div');el.className='note';el.style.animationDelay=i*.08+'s';
+    el.innerHTML=`<div class="nnum">${i+1}</div><div class="ntxt">${r}</div>`;
+    el.addEventListener('touchstart',burst);w.appendChild(el);
   });
 }
 
 // ══════════════════════════════════════════════
 // ⚔️ FIGHTS
 // ══════════════════════════════════════════════
-const fights = [
+const fights=[
   {date:'April 14, 2023',title:'The Silent Fight',msg:'We didn\'t talk for hours, but you came back and said sorry first 🥺'},
   {date:'June 2, 2023',title:'The Misunderstanding',msg:'One message taken the wrong way — but we talked it out, like always 💬'},
   {date:'August 20, 2023',title:'The Jealousy One',msg:'She was worried, and I didn\'t understand — until I did. I\'m sorry 🙏'},
@@ -977,23 +1082,18 @@ const fights = [
   {date:'September 30, 2024',title:'The Distance Day',msg:'We felt far apart even when together — but we talked and held on tighter 🤝'},
   {date:'January 12, 2025',title:'The Big Argument',msg:'Our toughest one yet. But we came out stronger, more honest, more in love 💕'},
 ];
+let fightsBuilt=false;
 function buildFights(){
-  const t = document.getElementById('fightTimeline');
-  const icons = ['😤','😶','😬','😔','😥','😢','😠','🥺','😞','💥'];
-  fights.forEach((f,i) => {
-    const el = document.createElement('div'); el.className = 'fitem';
-    el.innerHTML = `
-      <div class="fbubble">${icons[i]}</div>
-      <div class="fcontent">
-        <div class="fdate">${f.date}</div>
-        <div class="ftitle">${f.title}</div>
-        <div class="fside">Her side: She was right 💁‍♀️</div>
-        <div class="fmsg">${f.msg}</div>
-      </div>`;
+  if(fightsBuilt)return;fightsBuilt=true;
+  const t=document.getElementById('fightTimeline');
+  const icons=['😤','😶','😬','😔','😥','😢','😠','🥺','😞','💥'];
+  fights.forEach((f,i)=>{
+    const el=document.createElement('div');el.className='fitem';
+    el.innerHTML=`<div class="fbubble">${icons[i]}</div><div class="fcontent"><div class="fdate">${f.date}</div><div class="ftitle">${f.title}</div><div class="fside">Her side: She was right 💁‍♀️</div><div class="fmsg">${f.msg}</div></div>`;
     t.appendChild(el);
   });
-  const end = document.createElement('div'); end.className = 'fend';
-  end.textContent = 'Every fight = proof we care 💓 We always come back to each other';
+  const end=document.createElement('div');end.className='fend';
+  end.textContent='Every fight = proof we care 💓 We always come back to each other';
   t.appendChild(end);
 }
 
@@ -1001,11 +1101,11 @@ function buildFights(){
 // 🎇 BG HEARTS
 // ══════════════════════════════════════════════
 function startBgH(){
-  const c = document.getElementById('bgh');
-  const hs = ['💕','💗','💓','💖','❤️','🌸','✨','🌹','💫'];
-  for(let i = 0; i < 16; i++){
-    const h = document.createElement('div'); h.className = 'bh'; h.textContent = hs[i%hs.length];
-    h.style.cssText = `left:${Math.random()*100}%;font-size:${.6+Math.random()}rem;animation-duration:${10+Math.random()*12}s;animation-delay:${Math.random()*15}s;`;
+  const c=document.getElementById('bgh');
+  const hs=['💕','💗','💓','💖','❤️','🌸','✨','🌹','💫'];
+  for(let i=0;i<16;i++){
+    const h=document.createElement('div');h.className='bh';h.textContent=hs[i%hs.length];
+    h.style.cssText=`left:${Math.random()*100}%;font-size:${.6+Math.random()}rem;animation-duration:${10+Math.random()*12}s;animation-delay:${Math.random()*15}s;`;
     c.appendChild(h);
   }
 }
@@ -1013,29 +1113,22 @@ function startBgH(){
 // ══════════════════════════════════════════════
 // 🎊 CONFETTI
 // ══════════════════════════════════════════════
-const cvs = document.getElementById('cvs'), ctx = cvs.getContext('2d');
-cvs.width = window.innerWidth; cvs.height = window.innerHeight;
-let conf = []; let animGoing = false;
+const cvs=document.getElementById('cvs'),ctx=cvs.getContext('2d');
+cvs.width=window.innerWidth;cvs.height=window.innerHeight;
+let conf=[],animGoing=false;
 function confettiBurst(){
-  cvs.width = window.innerWidth; cvs.height = window.innerHeight;
-  const cols = ['#ff4d6d','#ffb3c1','#ffd700','#ff85a1','#c9184a','#9d4edd','#fff'];
-  for(let i = 0; i < 100; i++)
-    conf.push({x:Math.random()*cvs.width,y:-8,r:Math.random()*7+3,c:cols[i%cols.length],vx:(Math.random()-.5)*4,vy:Math.random()*3+1.5,a:1});
-  if(!animGoing){ animGoing=true; animConf(); }
+  cvs.width=window.innerWidth;cvs.height=window.innerHeight;
+  const cols=['#ff4d6d','#ffb3c1','#ffd700','#ff85a1','#c9184a','#9d4edd','#fff'];
+  for(let i=0;i<100;i++)conf.push({x:Math.random()*cvs.width,y:-8,r:Math.random()*7+3,c:cols[i%cols.length],vx:(Math.random()-.5)*4,vy:Math.random()*3+1.5,a:1});
+  if(!animGoing){animGoing=true;animConf();}
 }
 function animConf(){
   ctx.clearRect(0,0,cvs.width,cvs.height);
-  conf.forEach(c => {
-    c.x+=c.vx; c.y+=c.vy; c.a-=.009;
-    ctx.globalAlpha=Math.max(0,c.a);
-    ctx.fillStyle=c.c;
-    ctx.beginPath();ctx.arc(c.x,c.y,c.r,0,Math.PI*2);ctx.fill();
-  });
-  ctx.globalAlpha=1;
-  conf = conf.filter(c=>c.a>0);
-  if(conf.length>0) requestAnimationFrame(animConf); else animGoing=false;
+  conf.forEach(c=>{c.x+=c.vx;c.y+=c.vy;c.a-=.009;ctx.globalAlpha=Math.max(0,c.a);ctx.fillStyle=c.c;ctx.beginPath();ctx.arc(c.x,c.y,c.r,0,Math.PI*2);ctx.fill();});
+  ctx.globalAlpha=1;conf=conf.filter(c=>c.a>0);
+  if(conf.length>0)requestAnimationFrame(animConf);else animGoing=false;
 }
-window.addEventListener('resize',()=>{ cvs.width=window.innerWidth; cvs.height=window.innerHeight; });
+window.addEventListener('resize',()=>{cvs.width=window.innerWidth;cvs.height=window.innerHeight;});
 </script>
 </body>
 </html>
